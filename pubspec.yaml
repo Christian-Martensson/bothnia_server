@@ -1,5 +1,5 @@
 name: bothnia_server
-description: An empty Aqueduct application.
+description: En webbserver för att hantera Bothniabladets bildsamlingar.
 version: 0.0.1
 author: stable|kernel <jobs@stablekernel.com>
 
