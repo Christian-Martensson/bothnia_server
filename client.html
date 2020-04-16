@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Aqueduct OpenAPI Client</title>
+    <link rel="stylesheet" type="text/css" href="https://unpkg.com/swagger-ui-dist@3.12.1/swagger-ui.css">
+</head>
+
+<body>
+<div id="swagger-ui"></div>
+<script src="https://unpkg.com/swagger-ui-dist@3.12.1/swagger-ui-standalone-preset.js"></script>
+<script src="https://unpkg.com/swagger-ui-dist@3.12.1/swagger-ui-bundle.js"></script>
+<script>
+    window.onload = function() {       
+        const ui = SwaggerUIBundle({
+            spec: {"openapi":"3.0.0","info":{"title":"bothnia_server","description":"An empty Aqueduct application.","version":"0.0.1"},"servers":[{"url":"http://localhost:8888"}],"paths":{"/example":{"parameters":[]},"/image":{"parameters":[],"post":{"tags":["Image"],"operationId":"createImage","parameters":[],"requestBody":{"required":true,"content":{"application/json":{"schema":{"$ref":"#/components/schemas/Image"}}}},"responses":{"200":{"description":"Returns created object.","content":{"application/json":{"schema":{"$ref":"#/components/schemas/Image"}}}},"400":{"description":"Invalid request.","content":{"application/json":{"schema":{"type":"object","properties":{"error":{"type":"string"}}}}}},"409":{"description":"Object already exists","content":{"application/json":{"schema":{"type":"object","properties":{"error":{"type":"string"}}}}}}}},"get":{"tags":["Image"],"operationId":"getImages","parameters":[{"name":"count","in":"query","required":false,"allowEmptyValue":false,"schema":{"type":"integer"}},{"name":"offset","in":"query","required":false,"allowEmptyValue":false,"schema":{"type":"integer"}},{"name":"pageBy","in":"query","required":false,"allowEmptyValue":false,"schema":{"type":"string"}},{"name":"pageAfter","in":"query","required":false,"allowEmptyValue":false,"schema":{"type":"string"}},{"name":"pagePrior","in":"query","required":false,"allowEmptyValue":false,"schema":{"type":"string"}},{"name":"sortBy","in":"query","required":false,"allowEmptyValue":false,"schema":{"type":"array","items":{"type":"string"}}}],"responses":{"200":{"description":"Returns a list of objects.","content":{"application/json":{"schema":{"type":"array","items":{"$ref":"#/components/schemas/Image"}}}}},"400":{"description":"Invalid request.","content":{"application/json":{"schema":{"type":"object","properties":{"error":{"type":"string"}}}}}}}}},"/image/{id}":{"parameters":[{"name":"id","in":"path","required":true,"schema":{"type":"string"}}],"get":{"tags":["Image"],"operationId":"getImage","parameters":[{"name":"id","in":"path","required":true,"schema":{"type":"string"}}],"responses":{"200":{"description":"Returns a single object.","content":{"application/json":{"schema":{"$ref":"#/components/schemas/Image"}}}},"404":{"description":"No object found."}}},"delete":{"tags":["Image"],"operationId":"deleteImage","parameters":[{"name":"id","in":"path","required":true,"schema":{"type":"string"}}],"responses":{"200":{"description":"Object successfully deleted."},"404":{"description":"No object found."}}},"put":{"tags":["Image"],"operationId":"updateImage","parameters":[{"name":"id","in":"path","required":true,"schema":{"type":"string"}}],"requestBody":{"required":true,"content":{"application/json":{"schema":{"$ref":"#/components/schemas/Image"}}}},"responses":{"200":{"description":"Returns updated object.","content":{"application/json":{"schema":{"$ref":"#/components/schemas/Image"}}}},"404":{"description":"No object found."},"400":{"description":"Invalid request.","content":{"application/json":{"schema":{"type":"object","properties":{"error":{"type":"string"}}}}}},"409":{"description":"Object already exists","content":{"application/json":{"schema":{"type":"object","properties":{"error":{"type":"string"}}}}}}}}}},"components":{"schemas":{"Image":{"title":"Image","type":"object","properties":{"id":{"title":"id","type":"integer","description":"This is the primary identifier for this object.\n","nullable":false},"name":{"title":"name","type":"string","nullable":false}},"description":""}},"responses":{},"parameters":{},"requestBodies":{},"headers":{},"securitySchemes":{},"callbacks":{}}},
+            dom_id: '#swagger-ui',
+            deepLinking: true,
+            presets: [
+                SwaggerUIBundle.presets.apis,
+                SwaggerUIStandalonePreset
+            ],
+            plugins: [
+                SwaggerUIBundle.plugins.DownloadUrl
+            ],
+            layout: "StandaloneLayout",
+        })
+        window.ui = ui
+    }
+</script>
+</body>
+
+</html>
+    
