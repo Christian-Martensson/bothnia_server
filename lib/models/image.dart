@@ -6,6 +6,14 @@ class _Image {
   @Column(primaryKey: true)
   int id;
 
-  @Column()
   String name;
+
+  String path;
+
+  double version;
+
+  String resolution;
+
+  @Relate(#versions)
+  ImageMetaData metaData;
 }
