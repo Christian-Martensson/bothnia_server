@@ -23,8 +23,8 @@ class BothniaServerChannel extends ApplicationChannel {
         config.database.databaseName);
     context = ManagedContext(dataModel, store);
 
-    /*  final authStorage = ManagedAuthDelegate<User>(context);
-    authServer = AuthServer(authStorage); */
+    final authStorage = ManagedAuthDelegate<User>(context);
+    authServer = AuthServer(authStorage);
   }
 
   @override
@@ -36,6 +36,10 @@ class BothniaServerChannel extends ApplicationChannel {
     });
 
     router.route("/image/[:id]").link(() => ImageController(context));
+
+    router.route("/files/*").link(() => FileController("public/"));
+
+    router.route("/apidoc/*").link(() => FileController("web/"));
 
     return router;
   }
