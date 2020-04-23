@@ -14,6 +14,12 @@ Future main() async {
 
     print(res.body);
   });
+
+  test("GET /doc returns 200 with html", () async {
+    final res = await harness.agent.get("/doc");
+
+    res.body;
+  });
 }
 
 Future<http.Response> getFile(String path,
