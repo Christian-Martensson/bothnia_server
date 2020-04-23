@@ -39,7 +39,7 @@ class BothniaServerChannel extends ApplicationChannel {
 
     router.route("/files/*").link(() => FileController("public/"));
 
-    router.route("/apidoc").link(() => FileController("web/client.html"));
+    router.route("/apidoc/*").link(() => FileController("web/"));
 
     return router;
   }
