@@ -1,3 +1,4 @@
+import 'package:bothnia_server/controllers/doc_controller.dart';
 import 'package:bothnia_server/controllers/image_controller.dart';
 
 import 'bothnia_server.dart';
@@ -8,7 +9,6 @@ import 'bothnia_server.dart';
 /// database connections. See http://aqueduct.io/docs/http/channel/.
 class BothniaServerChannel extends ApplicationChannel {
   ManagedContext context;
-
   AuthServer authServer;
 
   @override
@@ -40,6 +40,8 @@ class BothniaServerChannel extends ApplicationChannel {
     router.route("/files/*").link(() => FileController("public/"));
 
     router.route("/apidoc/*").link(() => FileController("web/"));
+
+    router.route("/doc/*").link(() => DocController());
 
     return router;
   }
