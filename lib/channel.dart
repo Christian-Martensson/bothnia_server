@@ -1,7 +1,7 @@
-import 'package:bothnia_server/controllers/doc_controller.dart';
-import 'package:bothnia_server/controllers/image_controller.dart';
-
 import 'bothnia_server.dart';
+import 'controllers/doc_controller.dart';
+import 'controllers/image_controller.dart';
+import 'controllers/test_controller.dart';
 
 /// This type initializes an application.
 ///
@@ -36,6 +36,8 @@ class BothniaServerChannel extends ApplicationChannel {
     });
 
     router.route("/image/[:id]").link(() => ImageController(context));
+
+    router.route("/find/:name").link(() => TestController(context));
 
     router.route("/files/*").link(() => FileController("public/"));
 
