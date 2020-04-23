@@ -8,9 +8,7 @@ class DocController extends ResourceController {
   Future<Response> getDoc() async {
     final file = File("web/client.html");
 
-    var response = Response.ok(file.readAsStringSync());
-    //..contentType = ContentType("application", "html");
-
-    return response;
+    return Response.ok(file.readAsStringSync())
+      ..contentType = ContentType.html; //ContentType("application", "html");
   }
 }
