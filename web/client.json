@@ -1,1 +1,614 @@
-{"openapi":"3.0.0","info":{"title":"bothnia_server","description":"En webbserver för att hantera Bothniabladets bildsamlingar.","version":"0.0.1"},"servers":[{"url":"http://localhost:8888"}],"paths":{"/example":{"parameters":[]},"/image":{"parameters":[],"post":{"tags":["Image"],"operationId":"createImageMetaData","parameters":[],"requestBody":{"required":true,"content":{"application/json":{"schema":{"$ref":"#/components/schemas/ImageMetaData"}}}},"responses":{"200":{"description":"Returns created object.","content":{"application/json":{"schema":{"$ref":"#/components/schemas/ImageMetaData"}}}},"400":{"description":"Invalid request.","content":{"application/json":{"schema":{"type":"object","properties":{"error":{"type":"string"}}}}}},"409":{"description":"Object already exists","content":{"application/json":{"schema":{"type":"object","properties":{"error":{"type":"string"}}}}}}}},"get":{"tags":["Image"],"operationId":"getImageMetaDatas","parameters":[{"name":"count","in":"query","required":false,"allowEmptyValue":false,"schema":{"type":"integer"}},{"name":"offset","in":"query","required":false,"allowEmptyValue":false,"schema":{"type":"integer"}},{"name":"pageBy","in":"query","required":false,"allowEmptyValue":false,"schema":{"type":"string"}},{"name":"pageAfter","in":"query","required":false,"allowEmptyValue":false,"schema":{"type":"string"}},{"name":"pagePrior","in":"query","required":false,"allowEmptyValue":false,"schema":{"type":"string"}},{"name":"sortBy","in":"query","required":false,"allowEmptyValue":false,"schema":{"type":"array","items":{"type":"string"}}}],"responses":{"200":{"description":"Returns a list of objects.","content":{"application/json":{"schema":{"type":"array","items":{"$ref":"#/components/schemas/ImageMetaData"}}}}},"400":{"description":"Invalid request.","content":{"application/json":{"schema":{"type":"object","properties":{"error":{"type":"string"}}}}}}}}},"/image/{id}":{"parameters":[{"name":"id","in":"path","required":true,"schema":{"type":"string"}}],"get":{"tags":["Image"],"operationId":"getImageMetaData","parameters":[{"name":"id","in":"path","required":true,"schema":{"type":"string"}}],"responses":{"200":{"description":"Returns a single object.","content":{"application/json":{"schema":{"$ref":"#/components/schemas/ImageMetaData"}}}},"404":{"description":"No object found."}}},"delete":{"tags":["Image"],"operationId":"deleteImageMetaData","parameters":[{"name":"id","in":"path","required":true,"schema":{"type":"string"}}],"responses":{"200":{"description":"Object successfully deleted."},"404":{"description":"No object found."}}},"put":{"tags":["Image"],"operationId":"updateImageMetaData","parameters":[{"name":"id","in":"path","required":true,"schema":{"type":"string"}}],"requestBody":{"required":true,"content":{"application/json":{"schema":{"$ref":"#/components/schemas/ImageMetaData"}}}},"responses":{"200":{"description":"Returns updated object.","content":{"application/json":{"schema":{"$ref":"#/components/schemas/ImageMetaData"}}}},"404":{"description":"No object found."},"400":{"description":"Invalid request.","content":{"application/json":{"schema":{"type":"object","properties":{"error":{"type":"string"}}}}}},"409":{"description":"Object already exists","content":{"application/json":{"schema":{"type":"object","properties":{"error":{"type":"string"}}}}}}}}}},"components":{"schemas":{"ImageMetaData":{"title":"ImageMetaData","type":"object","properties":{"id":{"title":"id","type":"integer","description":"This is the primary identifier for this object.\n","nullable":false},"name":{"title":"name","type":"string","nullable":false},"description":{"title":"description","type":"string","nullable":false},"created":{"title":"created","type":"string","format":"date-time","nullable":false},"firstPubDate":{"title":"firstPubDate","type":"string","format":"date-time","nullable":false},"coordinates":{"title":"coordinates","type":"string","nullable":false},"license":{"title":"license","type":"string","nullable":false},"usesLeft":{"title":"usesLeft","type":"integer","nullable":false},"versions":{"type":"array","items":{"$ref":"#/components/schemas/Image"},"nullable":true,"readOnly":true},"photographer":{"title":"photographer","type":"object","properties":{"id":{"type":"integer"}}}},"description":""},"Image":{"title":"Image","type":"object","properties":{"id":{"title":"id","type":"integer","description":"This is the primary identifier for this object.\n","nullable":false},"name":{"title":"name","type":"string","nullable":false},"path":{"title":"path","type":"string","nullable":false},"version":{"title":"version","type":"number","nullable":false},"resolution":{"title":"resolution","type":"string","nullable":false},"metaData":{"title":"metaData","type":"object","properties":{"id":{"type":"integer"}}}},"description":""},"Photographer":{"title":"Photographer","type":"object","properties":{"id":{"title":"id","type":"integer","description":"This is the primary identifier for this object.\n","nullable":false},"fName":{"title":"fName","type":"string","nullable":false},"lName":{"title":"lName","type":"string","nullable":false},"email":{"title":"email","type":"string","description":"No two objects may have the same value for this field.\n","nullable":false},"images":{"type":"array","items":{"$ref":"#/components/schemas/ImageMetaData"},"nullable":true,"readOnly":true}},"description":""},"User":{"title":"User","type":"object","properties":{"password":{"title":"password","type":"string","nullable":false,"writeOnly":true},"id":{"title":"id","type":"integer","description":"This is the primary identifier for this object.\n","nullable":false},"username":{"title":"username","type":"string","description":"No two objects may have the same value for this field.\n","nullable":false},"tokens":{"type":"array","items":{"$ref":"#/components/schemas/ManagedAuthToken"},"nullable":true,"readOnly":true}},"description":""},"ManagedAuthClient":{"title":"ManagedAuthClient","type":"object","properties":{"id":{"title":"id","type":"string","description":"This is the primary identifier for this object.\n","nullable":false},"hashedSecret":{"title":"hashedSecret","type":"string","nullable":true},"salt":{"title":"salt","type":"string","nullable":true},"redirectURI":{"title":"redirectURI","type":"string","nullable":true},"allowedScope":{"title":"allowedScope","type":"string","nullable":true},"tokens":{"type":"array","items":{"$ref":"#/components/schemas/ManagedAuthToken"},"nullable":true,"readOnly":true}},"description":""},"ManagedAuthToken":{"title":"ManagedAuthToken","type":"object","properties":{"id":{"title":"id","type":"integer","description":"This is the primary identifier for this object.\n","nullable":false},"code":{"title":"code","type":"string","description":"No two objects may have the same value for this field.\n","nullable":true},"accessToken":{"title":"accessToken","type":"string","description":"No two objects may have the same value for this field.\n","nullable":true},"refreshToken":{"title":"refreshToken","type":"string","description":"No two objects may have the same value for this field.\n","nullable":true},"scope":{"title":"scope","type":"string","nullable":true},"issueDate":{"title":"issueDate","type":"string","format":"date-time","nullable":false},"expirationDate":{"title":"expirationDate","type":"string","format":"date-time","nullable":false},"type":{"title":"type","type":"string","nullable":true},"resourceOwner":{"title":"resourceOwner","type":"object","properties":{"id":{"type":"integer"}}},"client":{"title":"client","type":"object","properties":{"id":{"type":"string"}}}},"description":""}},"responses":{},"parameters":{},"requestBodies":{},"headers":{},"securitySchemes":{},"callbacks":{}}}
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "bothnia_server",
+        "description": "En webbserver för att hantera Bothniabladets bildsamlingar.",
+        "version": "0.0.1"
+    },
+    "servers": [
+        {
+            "url": "http://localhost:8888"
+        }
+    ],
+    "paths": {
+        "/example": {
+            "parameters": []
+        },
+        "/image": {
+            "parameters": [],
+            "post": {
+                "tags": [
+                    "Image"
+                ],
+                "operationId": "createImage",
+                "parameters": [],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Image"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Returns created object.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Image"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid request.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "error": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "409": {
+                        "description": "Object already exists",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "error": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "get": {
+                "tags": [
+                    "Image"
+                ],
+                "operationId": "getImages",
+                "parameters": [
+                    {
+                        "name": "count",
+                        "in": "query",
+                        "required": false,
+                        "allowEmptyValue": false,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "offset",
+                        "in": "query",
+                        "required": false,
+                        "allowEmptyValue": false,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "pageBy",
+                        "in": "query",
+                        "required": false,
+                        "allowEmptyValue": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "pageAfter",
+                        "in": "query",
+                        "required": false,
+                        "allowEmptyValue": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "pagePrior",
+                        "in": "query",
+                        "required": false,
+                        "allowEmptyValue": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "sortBy",
+                        "in": "query",
+                        "required": false,
+                        "allowEmptyValue": false,
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Returns a list of objects.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Image"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid request.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "error": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/image/{id}": {
+            "parameters": [
+                {
+                    "name": "id",
+                    "in": "path",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            ],
+            "get": {
+                "tags": [
+                    "Image"
+                ],
+                "operationId": "getImage",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Returns a single object.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Image"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "No object found."
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Image"
+                ],
+                "operationId": "deleteImage",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Object successfully deleted."
+                    },
+                    "404": {
+                        "description": "No object found."
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Image"
+                ],
+                "operationId": "updateImage",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Image"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Returns updated object.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Image"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "No object found."
+                    },
+                    "400": {
+                        "description": "Invalid request.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "error": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "409": {
+                        "description": "Object already exists",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "error": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "ImageMetaData": {
+                "title": "ImageMetaData",
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "title": "id",
+                        "type": "integer",
+                        "description": "This is the primary identifier for this object.\n",
+                        "nullable": false
+                    },
+                    "name": {
+                        "title": "name",
+                        "type": "string",
+                        "nullable": false
+                    },
+                    "description": {
+                        "title": "description",
+                        "type": "string",
+                        "nullable": false
+                    },
+                    "created": {
+                        "title": "created",
+                        "type": "string",
+                        "format": "date-time",
+                        "nullable": false
+                    },
+                    "firstPubDate": {
+                        "title": "firstPubDate",
+                        "type": "string",
+                        "format": "date-time",
+                        "nullable": false
+                    },
+                    "coordinates": {
+                        "title": "coordinates",
+                        "type": "string",
+                        "nullable": false
+                    },
+                    "license": {
+                        "title": "license",
+                        "type": "string",
+                        "nullable": false
+                    },
+                    "usesLeft": {
+                        "title": "usesLeft",
+                        "type": "integer",
+                        "nullable": false
+                    },
+                    "versions": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/Image"
+                        },
+                        "nullable": true,
+                        "readOnly": true
+                    },
+                    "photographer": {
+                        "title": "photographer",
+                        "type": "object",
+                        "properties": {
+                            "id": {
+                                "type": "integer"
+                            }
+                        }
+                    }
+                },
+                "description": ""
+            },
+            "Image": {
+                "title": "Image",
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "title": "id",
+                        "type": "integer",
+                        "description": "This is the primary identifier for this object.\n",
+                        "nullable": false
+                    },
+                    "name": {
+                        "title": "name",
+                        "type": "string",
+                        "nullable": false
+                    },
+                    "path": {
+                        "title": "path",
+                        "type": "string",
+                        "nullable": false
+                    },
+                    "version": {
+                        "title": "version",
+                        "type": "number",
+                        "nullable": false
+                    },
+                    "resolution": {
+                        "title": "resolution",
+                        "type": "string",
+                        "nullable": false
+                    },
+                    "metaData": {
+                        "title": "metaData",
+                        "type": "object",
+                        "properties": {
+                            "id": {
+                                "type": "integer"
+                            }
+                        }
+                    }
+                },
+                "description": ""
+            },
+            "Photographer": {
+                "title": "Photographer",
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "title": "id",
+                        "type": "integer",
+                        "description": "This is the primary identifier for this object.\n",
+                        "nullable": false
+                    },
+                    "fName": {
+                        "title": "fName",
+                        "type": "string",
+                        "nullable": false
+                    },
+                    "lName": {
+                        "title": "lName",
+                        "type": "string",
+                        "nullable": false
+                    },
+                    "email": {
+                        "title": "email",
+                        "type": "string",
+                        "description": "No two objects may have the same value for this field.\n",
+                        "nullable": false
+                    },
+                    "images": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/ImageMetaData"
+                        },
+                        "nullable": true,
+                        "readOnly": true
+                    }
+                },
+                "description": ""
+            },
+            "User": {
+                "title": "User",
+                "type": "object",
+                "properties": {
+                    "password": {
+                        "title": "password",
+                        "type": "string",
+                        "nullable": false,
+                        "writeOnly": true
+                    },
+                    "id": {
+                        "title": "id",
+                        "type": "integer",
+                        "description": "This is the primary identifier for this object.\n",
+                        "nullable": false
+                    },
+                    "username": {
+                        "title": "username",
+                        "type": "string",
+                        "description": "No two objects may have the same value for this field.\n",
+                        "nullable": false
+                    },
+                    "tokens": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/ManagedAuthToken"
+                        },
+                        "nullable": true,
+                        "readOnly": true
+                    }
+                },
+                "description": ""
+            },
+            "ManagedAuthClient": {
+                "title": "ManagedAuthClient",
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "title": "id",
+                        "type": "string",
+                        "description": "This is the primary identifier for this object.\n",
+                        "nullable": false
+                    },
+                    "hashedSecret": {
+                        "title": "hashedSecret",
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "salt": {
+                        "title": "salt",
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "redirectURI": {
+                        "title": "redirectURI",
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "allowedScope": {
+                        "title": "allowedScope",
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "tokens": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/ManagedAuthToken"
+                        },
+                        "nullable": true,
+                        "readOnly": true
+                    }
+                },
+                "description": ""
+            },
+            "ManagedAuthToken": {
+                "title": "ManagedAuthToken",
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "title": "id",
+                        "type": "integer",
+                        "description": "This is the primary identifier for this object.\n",
+                        "nullable": false
+                    },
+                    "code": {
+                        "title": "code",
+                        "type": "string",
+                        "description": "No two objects may have the same value for this field.\n",
+                        "nullable": true
+                    },
+                    "accessToken": {
+                        "title": "accessToken",
+                        "type": "string",
+                        "description": "No two objects may have the same value for this field.\n",
+                        "nullable": true
+                    },
+                    "refreshToken": {
+                        "title": "refreshToken",
+                        "type": "string",
+                        "description": "No two objects may have the same value for this field.\n",
+                        "nullable": true
+                    },
+                    "scope": {
+                        "title": "scope",
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "issueDate": {
+                        "title": "issueDate",
+                        "type": "string",
+                        "format": "date-time",
+                        "nullable": false
+                    },
+                    "expirationDate": {
+                        "title": "expirationDate",
+                        "type": "string",
+                        "format": "date-time",
+                        "nullable": false
+                    },
+                    "type": {
+                        "title": "type",
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "resourceOwner": {
+                        "title": "resourceOwner",
+                        "type": "object",
+                        "properties": {
+                            "id": {
+                                "type": "integer"
+                            }
+                        }
+                    },
+                    "client": {
+                        "title": "client",
+                        "type": "object",
+                        "properties": {
+                            "id": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                },
+                "description": ""
+            }
+        },
+        "responses": {},
+        "parameters": {},
+        "requestBodies": {},
+        "headers": {},
+        "securitySchemes": {},
+        "callbacks": {}
+    }
+}
