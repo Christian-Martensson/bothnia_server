@@ -1,7 +1,7 @@
 import 'bothnia_server.dart';
 import 'controllers/doc_controller.dart';
 import 'controllers/image_controller.dart';
-import 'controllers/test_controller.dart';
+import 'controllers/upload_controller.dart';
 
 /// This type initializes an application.
 ///
@@ -32,17 +32,18 @@ class BothniaServerChannel extends ApplicationChannel {
     final router = Router();
 
     router.route("/example").linkFunction((request) async {
-      return Response.ok({"key": "value"});
+      return Response.ok(request.body);
     });
 
     router.route("/image/[:id]").link(() => ImageController(context));
 
-    router.route("/find/:name").link(() => TestController(context));
-
+    // for accessing a file, e.g. "ip/files/test.jpg"
     router.route("/files/*").link(() => FileController("public/"));
 
-    router.route("/apidoc/*").link(() => FileController("web/"));
+    // for uploading images using base64Encoded in json.
+    router.route("/upload").link(() => UploadController(context));
 
+    // for serving the API docs
     router.route("/doc").link(() => DocController(context));
 
     return router;

@@ -1,24 +1,37 @@
+import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'harness/app.dart';
 
 Future main() async {
   final harness = Harness()..install();
 
-  test("GET /example returns 200 {'key': 'value'}", () async {
-    expectResponse(await harness.agent.get("/example"), 200,
-        body: {"key": "value"});
+  test("POST /test returns 200", () async {
+    final image = File("test/test_assets/test.jpg");
+    final bytes = await image.readAsBytes();
+    final base64Image = base64Encode(bytes);
+
+    final res = await harness.agent.post(
+      "/upload",
+      body: {"content": base64Image},
+    );
+
+    expectResponse(res, 200);
   });
 
-  test("GET /apidoc returns 200 with html", () async {
-    final res = await harness.agent.get("/apidoc/client.html");
+  test("POST /test adds file to server", () async {
+    final image = File("test/test_assets/test.jpg");
+    final bytes = await image.readAsBytes();
+    final base64Image = base64Encode(bytes);
 
-    print(res.body);
-  });
+    final res = await harness.agent.post(
+      "/upload",
+      body: {
+        "name": DateTime.now().toString(),
+        "content": base64Image,
+      },
+    );
 
-  test("GET /doc returns 200 with html", () async {
-    final res = await harness.agent.get("/doc");
-
-    res.body;
+    expectResponse(res, 200);
   });
 }
 
