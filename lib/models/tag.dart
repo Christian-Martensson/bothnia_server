@@ -3,7 +3,7 @@ import 'package:bothnia_server/bothnia_server.dart';
 class Tag extends ManagedObject<_Tag> implements _Tag {}
 
 class _Tag {
-  @Column(primaryKey: true)
+  @primaryKey
   int id;
 
   String name;

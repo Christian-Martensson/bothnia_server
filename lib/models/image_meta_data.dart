@@ -4,7 +4,7 @@ class ImageMetaData extends ManagedObject<_ImageMetaData>
     implements _ImageMetaData {}
 
 class _ImageMetaData {
-  @Column(primaryKey: true)
+  @primaryKey
   int id;
 
   String name;

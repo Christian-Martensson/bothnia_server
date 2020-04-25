@@ -3,7 +3,7 @@ import 'package:bothnia_server/bothnia_server.dart';
 class Image extends ManagedObject<_Image> implements _Image {}
 
 class _Image {
-  @Column(primaryKey: true)
+  @primaryKey
   int id;
 
   String name; //e.g. "cropped and saturated"

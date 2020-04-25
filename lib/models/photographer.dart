@@ -4,7 +4,7 @@ class Photographer extends ManagedObject<_Photographer>
     implements _Photographer {}
 
 class _Photographer {
-  @Column(primaryKey: true)
+  @primaryKey
   int id;
 
   String fName;
