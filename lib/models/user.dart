@@ -1,6 +1,6 @@
 import 'package:bothnia_server/bothnia_server.dart';
 
-class User extends ManagedObject<_User> implements _User {}
+/* class User extends ManagedObject<_User> implements _User {}
 
 class _User {
   @Column(primaryKey: true)
@@ -12,9 +12,8 @@ class _User {
   String password;
 
   ManagedSet<ImageMetaData> images;
-}
+} */
 
-/* 
 class User extends ManagedObject<_User>
     implements _User, ManagedAuthResourceOwner<_User> {
   @Serialize(input: true, output: false)
@@ -22,6 +21,8 @@ class User extends ManagedObject<_User>
 }
 
 class _User extends ResourceOwnerTableDefinition {
+  ManagedSet<ImageMetaData> images;
+
 /* This class inherits the following from ManagedAuthenticatable:
 
   @primaryKey
@@ -39,4 +40,3 @@ class _User extends ResourceOwnerTableDefinition {
   ManagedSet<ManagedAuthToken> tokens;
  */
 }
- */

@@ -10,5 +10,5 @@ class _Tag {
 
   String color;
 
-  ManagedSet<ImageToTag> imagesTags;
+  ManagedSet<ImageToTag> imageTags;
 }
