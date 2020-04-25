@@ -10,6 +10,7 @@ class _Image {
 
   String path;
 
+  @Column(nullable: true)
   String resolution;
 
   double version; // 0 for original, the rest customisable. 1.1, 1.2, 2.1 etc.

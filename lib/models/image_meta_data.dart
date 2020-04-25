@@ -9,16 +9,21 @@ class _ImageMetaData {
 
   String name;
 
+  @Column(nullable: true)
   String description;
 
   DateTime created;
 
+  @Column(nullable: true)
   DateTime firstPubDate;
 
+  @Column(nullable: true)
   String coordinates;
 
+  @Column(nullable: true)
   String license;
 
+  @Column(nullable: true)
   int usesLeft;
 
   bool isPublicallyAdded;
