@@ -23,9 +23,8 @@ class BothniaServerChannel extends ApplicationChannel {
         config.database.databaseName);
     context = ManagedContext(dataModel, store);
 
-    //todo: add oauth
-    /*   final authStorage = ManagedAuthDelegate<User>(context);
-    authServer = AuthServer(authStorage); */
+    final authStorage = ManagedAuthDelegate<User>(context);
+    authServer = AuthServer(authStorage);
   }
 
   @override

@@ -11,8 +11,7 @@ class UploadController extends ResourceController {
   Future<Response> postImage() async {
     final body = await request.body.decode();
     final String name = body["name"] as String;
-    final String base64Image = body["content"] as String;
-    final image = base64Decode(base64Image);
+    final image = base64Decode(body["content"] as String);
 
     //todo: check that the name doesn't have the .jpg suffix already
     await File("public/$name.jpg").writeAsBytes(image);
