@@ -6,14 +6,14 @@ class _Image {
   @Column(primaryKey: true)
   int id;
 
-  String name;
+  String name; //e.g. "cropped and saturated"
 
   String path;
 
-  double version;
-
   String resolution;
 
+  double version; // 0 for original, the rest customisable. 1.1, 1.2, 2.1 etc.
+
   @Relate(#versions)
-  ImageMetaData metaData;
+  ImageMetaData imageMetaData;
 }

@@ -23,8 +23,9 @@ class BothniaServerChannel extends ApplicationChannel {
         config.database.databaseName);
     context = ManagedContext(dataModel, store);
 
-    final authStorage = ManagedAuthDelegate<User>(context);
-    authServer = AuthServer(authStorage);
+    //todo: add oauth
+    /*   final authStorage = ManagedAuthDelegate<User>(context);
+    authServer = AuthServer(authStorage); */
   }
 
   @override
@@ -45,6 +46,8 @@ class BothniaServerChannel extends ApplicationChannel {
 
     // for serving the API docs
     router.route("/doc").link(() => DocController(context));
+
+    // /
 
     return router;
   }

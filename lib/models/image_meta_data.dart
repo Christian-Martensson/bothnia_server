@@ -21,8 +21,18 @@ class _ImageMetaData {
 
   int usesLeft;
 
+  bool isPublicallyAdded;
+
   ManagedSet<Image> versions;
+
+  ManagedSet<ImageToTag> imageTags;
+
+  @Relate(#images)
+  Category category;
 
   @Relate(#images)
   Photographer photographer;
+
+  @Relate(#images)
+  User user;
 }
