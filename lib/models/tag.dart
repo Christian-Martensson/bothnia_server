@@ -8,7 +8,7 @@ class _Tag {
 
   String name;
 
-  String color;
+  //String color;
 
   ManagedSet<ImageToTag> imageTags;
 }
