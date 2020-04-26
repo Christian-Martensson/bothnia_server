@@ -21,7 +21,8 @@ class _Image {
   @Column(nullable: true)
   String description; //e.g. "cropped and saturated"
 
-  String path;
+  //path is always primary key
+  // String path;
 
   @Column(nullable: true)
   String resolution;

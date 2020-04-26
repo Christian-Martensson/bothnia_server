@@ -1,3 +1,5 @@
+import 'package:bothnia_server/controllers/category_controller.dart';
+
 import 'bothnia_server.dart';
 import 'controllers/doc_controller.dart';
 import 'controllers/image_controller.dart';
@@ -32,10 +34,14 @@ class BothniaServerChannel extends ApplicationChannel {
     final router = Router();
 
     router.route("/example").linkFunction((request) async {
-      return Response.ok(request.body);
+      return Response.ok({"key": "value"});
     });
 
-    router.route("/image/[:id]").link(() => ImageController(context));
+    router.route("/image/original").link(() => ImageController(context));
+
+    router.route("/category/[:id]").link(() => CategoryController(context));
+
+    /* router.route("/image/[:id]").link(() => ImageController(context)); */
 
     // for accessing a file, e.g. "ip/files/test.jpg"
     router.route("/files/*").link(() => FileController("public/"));
