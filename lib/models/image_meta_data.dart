@@ -32,7 +32,7 @@ class _ImageMetaData {
 
   ManagedSet<ImageToTag> imageTags;
 
-  @Relate(#images)
+  @Relate(#images, isRequired: true, onDelete: DeleteRule.restrict)
   Category category;
 
   @Relate(#images)

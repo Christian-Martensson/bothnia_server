@@ -15,6 +15,6 @@ class _Image {
 
   int version;
 
-  @Relate(#versions)
+  @Relate(#versions, isRequired: true, onDelete: DeleteRule.cascade)
   ImageMetaData imageMetaData;
 }
