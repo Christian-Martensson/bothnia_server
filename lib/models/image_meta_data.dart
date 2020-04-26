@@ -1,7 +1,18 @@
 import 'package:bothnia_server/bothnia_server.dart';
 
 class ImageMetaData extends ManagedObject<_ImageMetaData>
-    implements _ImageMetaData {}
+    implements _ImageMetaData {
+  @override
+  void willInsert() {
+    created = DateTime.now().toUtc();
+    modified = DateTime.now().toUtc();
+  }
+
+  @override
+  void willUpdate() {
+    modified = DateTime.now().toUtc();
+  }
+}
 
 class _ImageMetaData {
   @primaryKey
@@ -13,6 +24,12 @@ class _ImageMetaData {
   String description;
 
   DateTime created;
+
+  DateTime modified;
+
+  // nullable in case EXIF is missing
+  @Column(nullable: true)
+  DateTime captured;
 
   @Column(nullable: true)
   DateTime firstPubDate;
@@ -26,6 +43,7 @@ class _ImageMetaData {
   @Column(nullable: true)
   int usesLeft;
 
+  @Column(defaultValue: "false")
   bool isPublicallyAdded;
 
   ManagedSet<Image> versions;
