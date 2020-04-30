@@ -7,9 +7,9 @@ class User extends ManagedObject<_User>
 }
 
 class _User extends ResourceOwnerTableDefinition {
-  ManagedSet<ImageMetaData> images; //images uploaded by user
-
   String role;
+
+  ManagedSet<ImageMetaData> images; //images uploaded by user
   /* 
   This class inherits the following from ManagedAuthenticatable:
 
