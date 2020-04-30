@@ -11,8 +11,11 @@ class _Photographer {
 
   String lName;
 
-  @Column(unique: true)
+  @Column(nullable: true)
   String email;
+
+  @Column(nullable: true)
+  String phone;
 
   ManagedSet<ImageMetaData> images;
 }

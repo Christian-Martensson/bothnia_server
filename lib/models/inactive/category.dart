@@ -1,4 +1,4 @@
-import '../bothnia_server.dart';
+/* import '../bothnia_server.dart';
 
 class Category extends ManagedObject<_Category> implements _Category {}
 
@@ -12,3 +12,4 @@ class _Category {
 
   ManagedSet<ImageMetaData> images;
 }
+ */

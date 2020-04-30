@@ -39,9 +39,9 @@ class BothniaServerChannel extends ApplicationChannel {
 
     router.route("/image/original").link(() => ImageController(context));
 
-    router.route("/category/[:id]").link(() => CategoryController(context));
+    //router.route("/category/[:id]").link(() => CategoryController(context));
 
-    /* router.route("/image/[:id]").link(() => ImageController(context)); */
+    //router.route("/image/[:id]").link(() => ImageController(context));
 
     // for accessing a file, e.g. "ip/files/test.jpg"
     router.route("/files/*").link(() => FileController("public/"));

@@ -15,7 +15,6 @@ export 'package:bothnia_server/models/photographer.dart';
 export 'package:bothnia_server/models/user.dart';
 export 'package:bothnia_server/models/tag.dart';
 export 'package:bothnia_server/models/image_to_tag.dart';
-export 'package:bothnia_server/models/category.dart';
 
 export 'package:aqueduct/managed_auth.dart';
 

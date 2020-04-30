@@ -25,9 +25,7 @@ class ImageController extends ResourceController {
 
     final body = await request.body.decode();
 
-    metaQuery.values
-      ..name = body["name"] as String
-      ..category.id = body["category"] as int;
+    metaQuery.values.name = body["name"] as String;
 
     final insertedMeta = await metaQuery.insert();
 
