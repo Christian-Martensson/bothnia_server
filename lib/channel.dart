@@ -1,5 +1,3 @@
-import 'package:bothnia_server/controllers/category_controller.dart';
-
 import 'bothnia_server.dart';
 import 'controllers/doc_controller.dart';
 import 'controllers/image_controller.dart';
@@ -37,6 +35,22 @@ class BothniaServerChannel extends ApplicationChannel {
       return Response.ok({"key": "value"});
     });
 
+    // OAUTH stuff
+    // Set up auth token route- this grants and refresh tokens
+    router.route("/auth/token").link(() => AuthController(authServer));
+
+    // Set up auth code route- this grants temporary access codes that can be exchanged for token
+    router.route("/auth/code").link(() => AuthCodeController(authServer));
+
+    // Set up protected route
+    router
+        .route("/protected")
+        .link(() => Authorizer.bearer(authServer))
+        .linkFunction((request) async {
+      return Response.ok({"key": "value"});
+    });
+
+    // IMAGES
     router.route("/image/original").link(() => ImageController(context));
 
     //router.route("/category/[:id]").link(() => CategoryController(context));
