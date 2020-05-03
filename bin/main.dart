@@ -3,7 +3,7 @@ import 'package:bothnia_server/bothnia_server.dart';
 Future main() async {
   final app = Application<BothniaChannel>()
     ..options.configurationFilePath = "config.yaml"
-    ..options.port = 8888;
+    ..options.port = 7777;
 
   final count = Platform.numberOfProcessors ~/ 2;
   await app.start(numberOfInstances: count > 0 ? count : 1);
