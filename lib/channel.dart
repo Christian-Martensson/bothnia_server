@@ -12,9 +12,7 @@ import 'utility/html_template.dart';
 ///
 /// Override methods in this class to set up routes and initialize services like
 /// database connections. See http://aqueduct.io/docs/http/channel/.
-class BothniaChannel extends ApplicationChannel
-    implements AuthRedirectControllerDelegate {
-  final HTMLRenderer htmlRenderer = HTMLRenderer();
+class BothniaChannel extends ApplicationChannel {
   ManagedContext context;
   AuthServer authServer;
 
@@ -36,11 +34,20 @@ class BothniaChannel extends ApplicationChannel
     });
 
     /* OAuth 2.0 Endpoints */
+
+    // Set up auth token route- this grants and refresh tokens
     router.route("/auth/token").link(() => AuthController(authServer));
 
+    // Set up auth code route- this grants temporary access codes that can be exchanged for token
+    router.route("/auth/code").link(() => AuthCodeController(authServer));
+
+    // Set up protected route
     router
-        .route("/auth/form")
-        .link(() => AuthRedirectController(authServer, delegate: this));
+        .route("/protected")
+        .link(() => Authorizer.bearer(authServer))
+        .linkFunction((request) async {
+      return Response.ok({"secret": "secret"});
+    });
 
     /* Create an account */
     router
@@ -89,23 +96,6 @@ class BothniaChannel extends ApplicationChannel
         connectionInfo.databaseName);
 
     return ManagedContext(dataModel, psc);
-  }
-
-  @override
-  Future<String> render(AuthRedirectController forController, Uri requestUri,
-      String responseType, String clientID, String state, String scope) async {
-    final map = {
-      "response_type": responseType,
-      "client_id": clientID,
-      "state": state
-    };
-
-    map["path"] = requestUri.path;
-    if (scope != null) {
-      map["scope"] = scope;
-    }
-
-    return htmlRenderer.renderHTML("web/client.html", map);
   }
 }
 
