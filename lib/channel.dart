@@ -75,7 +75,7 @@ class BothniaChannel extends ApplicationChannel
     router.route("/upload").link(() => UploadController(context));
 
     // for serving the API docs
-    router.route("/doc").link(() => DocController(context));
+    //router.route("/doc").link(() => DocController(context));
 
     // /
 
