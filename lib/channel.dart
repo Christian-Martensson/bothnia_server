@@ -109,7 +109,7 @@ class BothniaChannel extends ApplicationChannel
       map["scope"] = scope;
     }
 
-    return htmlRenderer.renderHTML("web/login.html", map);
+    return htmlRenderer.renderHTML("web/client.html", map);
   }
 }
 
