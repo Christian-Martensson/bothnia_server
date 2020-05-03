@@ -6,8 +6,8 @@ export 'package:aqueduct_test/aqueduct_test.dart';
 export 'package:test/test.dart';
 export 'package:aqueduct/aqueduct.dart';
 
-class Harness extends TestHarness<BothniaServerChannel>
-    with TestHarnessAuthMixin<BothniaServerChannel>, TestHarnessORMMixin {
+class Harness extends TestHarness<BothniaChannel>
+    with TestHarnessAuthMixin<BothniaChannel>, TestHarnessORMMixin {
   @override
   ManagedContext get context => channel.context;
 

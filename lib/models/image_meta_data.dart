@@ -56,6 +56,6 @@ class _ImageMetaData {
   @Relate(#images)
   Photographer photographer;
 
-  @Relate(#images)
-  User user;
+  /* @Relate(#images)
+  User user; */
 }

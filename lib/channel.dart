@@ -2,28 +2,26 @@ import 'package:bothnia_server/controllers/register_controller.dart';
 
 import 'bothnia_server.dart';
 import 'controllers/doc_controller.dart';
+import 'controllers/identity_controller.dart';
 import 'controllers/image_controller.dart';
 import 'controllers/upload_controller.dart';
+import 'controllers/user_controller.dart';
+import 'utility/html_template.dart';
 
 /// This type initializes an application.
 ///
 /// Override methods in this class to set up routes and initialize services like
 /// database connections. See http://aqueduct.io/docs/http/channel/.
-class BothniaServerChannel extends ApplicationChannel {
+class BothniaChannel extends ApplicationChannel
+    implements AuthRedirectControllerDelegate {
+  final HTMLRenderer htmlRenderer = HTMLRenderer();
   ManagedContext context;
   AuthServer authServer;
 
   @override
   Future prepare() async {
     final config = MyConfig(options.configurationFilePath);
-    final dataModel = ManagedDataModel.fromCurrentMirrorSystem();
-    final store = PostgreSQLPersistentStore.fromConnectionInfo(
-        config.database.username,
-        config.database.password,
-        config.database.host,
-        config.database.port,
-        config.database.databaseName);
-    context = ManagedContext(dataModel, store);
+    context = contextWithConnectionInfo(config.database);
 
     final authStorage = ManagedAuthDelegate<User>(context);
     authServer = AuthServer(authStorage);
@@ -38,23 +36,30 @@ class BothniaServerChannel extends ApplicationChannel {
     });
 
     // OAUTH stuff
-    // Set up auth token route- this grants and refresh tokens
+    /* OAuth 2.0 Endpoints */
     router.route("/auth/token").link(() => AuthController(authServer));
 
-    // Set up auth code route- this grants temporary access codes that can be exchanged for token
-    router.route("/auth/code").link(() => AuthCodeController(authServer));
+    router
+        .route("/auth/form")
+        .link(() => AuthRedirectController(authServer, delegate: this));
 
+    /* Create an account */
     router
         .route("/register")
+        .link(() => Authorizer.basic(authServer))
         .link(() => RegisterController(context, authServer));
 
-    // Set up protected route
+    /* Gets profile for user with bearer token */
     router
-        .route("/protected")
+        .route("/me")
         .link(() => Authorizer.bearer(authServer))
-        .linkFunction((request) async {
-      return Response.ok({"key": "value"});
-    });
+        .link(() => IdentityController(context));
+
+    /* Gets all users or one specific user by id */
+    router
+        .route("/users/[:id]")
+        .link(() => Authorizer.bearer(authServer))
+        .link(() => UserController(context, authServer));
 
     // IMAGES
     router.route("/image/original").link(() => ImageController(context));
@@ -75,6 +80,36 @@ class BothniaServerChannel extends ApplicationChannel {
     // /
 
     return router;
+  }
+
+  ManagedContext contextWithConnectionInfo(
+      DatabaseConfiguration connectionInfo) {
+    final dataModel = ManagedDataModel.fromCurrentMirrorSystem();
+    final psc = PostgreSQLPersistentStore(
+        connectionInfo.username,
+        connectionInfo.password,
+        connectionInfo.host,
+        connectionInfo.port,
+        connectionInfo.databaseName);
+
+    return ManagedContext(dataModel, psc);
+  }
+
+  @override
+  Future<String> render(AuthRedirectController forController, Uri requestUri,
+      String responseType, String clientID, String state, String scope) async {
+    final map = {
+      "response_type": responseType,
+      "client_id": clientID,
+      "state": state
+    };
+
+    map["path"] = requestUri.path;
+    if (scope != null) {
+      map["scope"] = scope;
+    }
+
+    return htmlRenderer.renderHTML("web/login.html", map);
   }
 }
 
