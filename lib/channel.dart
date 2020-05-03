@@ -13,8 +13,8 @@ import 'utility/html_template.dart';
 /// Override methods in this class to set up routes and initialize services like
 /// database connections. See http://aqueduct.io/docs/http/channel/.
 class BothniaChannel extends ApplicationChannel
-    implements AuthRedirectControllerDelegate {
-  final HTMLRenderer htmlRenderer = HTMLRenderer();
+/*   implements AuthRedirectControllerDelegate  */ {
+  //final HTMLRenderer htmlRenderer = HTMLRenderer();
   ManagedContext context;
   AuthServer authServer;
 
@@ -37,7 +37,7 @@ class BothniaChannel extends ApplicationChannel
 
     // OAUTH stuff
     /* OAuth 2.0 Endpoints */
-    router.route("/auth/token").link(() => AuthController(authServer));
+    /*   router.route("/auth/token").link(() => AuthController(authServer));
 
     router
         .route("/auth/form")
@@ -60,7 +60,7 @@ class BothniaChannel extends ApplicationChannel
         .route("/users/[:id]")
         .link(() => Authorizer.bearer(authServer))
         .link(() => UserController(context, authServer));
-
+ */
     // IMAGES
     router.route("/image/original").link(() => ImageController(context));
 
@@ -95,7 +95,7 @@ class BothniaChannel extends ApplicationChannel
     return ManagedContext(dataModel, psc);
   }
 
-  @override
+  /*  @override
   Future<String> render(AuthRedirectController forController, Uri requestUri,
       String responseType, String clientID, String state, String scope) async {
     final map = {
@@ -110,7 +110,7 @@ class BothniaChannel extends ApplicationChannel
     }
 
     return htmlRenderer.renderHTML("web/client.html", map);
-  }
+  } */
 }
 
 class MyConfig extends Configuration {
