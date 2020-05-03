@@ -39,7 +39,7 @@ class BothniaChannel extends ApplicationChannel {
     router.route("/auth/token").link(() => AuthController(authServer));
 
     // Set up auth code route- this grants temporary access codes that can be exchanged for token
-    router.route("/auth/code").link(() => AuthCodeController(authServer));
+    router.route("/auth/code").link(() => AuthRedirectController(authServer));
 
     // Set up protected route
     router
