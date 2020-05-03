@@ -75,9 +75,6 @@ class BothniaChannel extends ApplicationChannel
 
     // for serving the API docs
     router.route("/doc").link(() => DocController(context));
-
-    // /
-
     return router;
   }
 
