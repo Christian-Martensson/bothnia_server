@@ -44,7 +44,7 @@ Future main() async {
           "license": null,
           "usesLeft": null,
           "isPublicallyAdded": false,
-          "category": {"id": 1},
+          //"category": {"id": 1},
           "photographer": null,
           "user": null,
           "image": {
