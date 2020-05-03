@@ -21,6 +21,7 @@ class RegisterController extends ResourceController {
     final query = Query<User>(context)..values = user;
 
     final u = await query.insert();
+    return Response.ok(u);
     final token = await authServer.authenticate(
         user.username,
         user.password,
