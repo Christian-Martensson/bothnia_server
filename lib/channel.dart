@@ -1,3 +1,5 @@
+import 'package:bothnia_server/controllers/register_controller.dart';
+
 import 'bothnia_server.dart';
 import 'controllers/doc_controller.dart';
 import 'controllers/image_controller.dart';
@@ -41,6 +43,10 @@ class BothniaServerChannel extends ApplicationChannel {
 
     // Set up auth code route- this grants temporary access codes that can be exchanged for token
     router.route("/auth/code").link(() => AuthCodeController(authServer));
+
+    router
+        .route("/register")
+        .link(() => RegisterController(context, authServer));
 
     // Set up protected route
     router
