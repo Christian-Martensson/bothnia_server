@@ -2,7 +2,7 @@
 import 'package:bothnia_server/bothnia_server.dart';
 
 Future main() async {
-  var app = new Application<BothniaServerChannel>()
+  var app = new Application<BothniaChannel>()
       ..options.configurationFilePath = "config.yaml"
       ..options.port = 7777;
 
