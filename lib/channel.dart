@@ -44,7 +44,9 @@ class BothniaChannel extends ApplicationChannel {
     router
       ..route("/user/[:username]")
           //  .link(() => Authorizer.bearer(authServer, scopes: ["admin"]))
-          .link(() => UserController(context, authServer));
+          .linkFunction((request) async {
+        return Response.ok({"key": "value"});
+      }).link(() => UserController(context, authServer));
 
     // Set up protected route
     router
