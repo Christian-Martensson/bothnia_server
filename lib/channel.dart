@@ -29,7 +29,7 @@ class BothniaChannel extends ApplicationChannel {
   Controller get entryPoint {
     final router = Router();
 
-    router.route("/example").linkFunction((request) async {
+    router.route("/exampless").linkFunction((request) async {
       return Response.ok({"key": "value"});
     });
 
