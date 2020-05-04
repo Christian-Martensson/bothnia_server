@@ -1,62 +1,79 @@
 import '../bothnia_server.dart';
 
 class UserController extends ResourceController {
-  UserController(this.context, this.authServer);
+  UserController(ManagedContext context, this.authServer) {
+    query = Query<User>(context);
+  }
 
-  final ManagedContext context;
   final AuthServer authServer;
+  Query<User> query;
 
+  @Operation.post()
+  Future<Response> createUser(@Bind.body() User user) async {
+    // Check for required parameters before we spend time hashing
+    if (user.username == null || user.type == null || user.password == null) {
+      return Response.badRequest(
+          body: {"error": "username, type, password and email required."});
+    }
+    // if (user.type == UserType.admin) {
+    //   return Response.badRequest(
+    //       body: {"error": "Can not create more than one admin user."});
+    // }
+    user
+      ..salt = AuthUtility.generateRandomSalt()
+      ..hashedPassword = authServer.hashPassword(user.password, user.salt);
+    query.values = user;
+    return Response.ok(await query.insert());
+  }
+
+  /// Get all Users
   @Operation.get()
-  Future<Response> getAll() async {
-    final query = Query<User>(context);
-    final users = await query.fetch();
-    return Response.ok(users);
+  Future<Response> getAllUsers() async {
+    var found = await query.fetch();
+    if (found == null) {
+      return Response.notFound(body: 'No Users found');
+    }
+    return Response.ok(found);
   }
 
-  @Operation.get("id")
-  Future<Response> getUser(@Bind.path("id") int id) async {
-    final query = Query<User>(context)..where((o) => o.id).equalTo(id);
-    final u = await query.fetchOne();
-    if (u == null) {
-      return Response.notFound();
+  /// Get User by username
+  @Operation.get('username')
+  Future<Response> getUser(@Bind.path('username') String username) async {
+    query.where((u) => u.username).equalTo(username);
+    var found = await query.fetchOne();
+    if (found == null) {
+      return Response.notFound(body: 'No User found with username $username');
     }
-
-    if (request.authorization.ownerID != id) {
-      // Filter out stuff for non-owner of user
-    }
-
-    return Response.ok(u);
+    return Response.ok(found);
   }
 
-  @Operation.put("id")
+  /// Update User by username
+  @Operation.put('username')
   Future<Response> updateUser(
-      @Bind.path("id") int id, @Bind.body() User user) async {
-    if (request.authorization.ownerID != id) {
-      return Response.unauthorized();
+      @Bind.path('username') String username, @Bind.body() User user) async {
+    // Check for required parameters before we spend time hashing
+    if (user.username == null || user.password == null) {
+      return Response.badRequest(
+          body: {"error": "username, password and email required."});
     }
-
-    final query = Query<User>(context)
-      ..values = user
-      ..where((o) => o.id).equalTo(id);
-
-    final u = await query.updateOne();
-    if (u == null) {
-      return Response.notFound();
-    }
-
-    return Response.ok(u);
+    user
+      ..salt = AuthUtility.generateRandomSalt()
+      ..hashedPassword = authServer.hashPassword(user.password, user.salt);
+    query
+      ..where((u) => u.username).equalTo(username)
+      ..values = user;
+    final result = await query.updateOne();
+    return Response.ok(result);
   }
 
-  @Operation.delete("id")
-  Future<Response> deleteUser(@Bind.path("id") int id) async {
-    if (request.authorization.ownerID != id) {
-      return Response.unauthorized();
+  /// Delete User by username
+  @Operation.delete('username')
+  Future<Response> deleteUser(@Bind.path('username') String username) async {
+    query.where((u) => u.username).equalTo(username);
+    final int deleted = await query.delete();
+    if (deleted == 0) {
+      return Response.notFound();
     }
-
-    final query = Query<User>(context)..where((o) => o.id).equalTo(id);
-    await authServer.revokeAllGrantsForResourceOwner(id);
-    await query.delete();
-
     return Response.ok(null);
   }
 }

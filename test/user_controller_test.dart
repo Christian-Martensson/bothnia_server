@@ -1,35 +1,155 @@
 import 'harness/app.dart';
 
 Future main() async {
-  final harness = Harness()..install();
+  Harness harness = new Harness()..install();
 
-  Map<int, Agent> agents;
-
-  setUp(() async {
-    agents = {};
-    for (var i = 0; i < 6; i++) {
-      final user = User()
-        ..username = "bob+$i@stablekernel.com"
-        ..password = "foobaraxegrind$i%";
-      agents[i] = await harness.registerUser(user);
-    }
-  });
-
-  tearDown(() async {
-    await harness.resetData();
-  });
-
-  test("Can get user with valid credentials", () async {
-    final response = await agents[0].get("/users/1");
+  Map checkUser(TestResponse response) {
     expect(
         response,
-        hasResponse(200,
-            body: partial({"username": "bob+0@stablekernel.com"})));
+        hasResponse(200, body: {
+          "id": isNotNull,
+          "created": isTimestamp,
+          "modified": isTimestamp,
+          "username": "chrmrt",
+          "name": "Christian Mårtensson",
+          "type": "photographer",
+          //"images": null,
+          "canEditor": false,
+          "canPhotographer": false,
+        }));
+    return response.body.as<Map>();
+  }
+
+  Future<Map> createUser() async {
+    var response = await harness.adminAgent.post("/user", body: {
+      "username": "chrmrt",
+      "name": "Christian Mårtensson",
+      "type": "photographer",
+      "password": "chrmrt",
+    });
+    return checkUser(response);
+  }
+
+  test("POST /user creates a User", () async {
+    await createUser();
   });
 
-  test("Updating user fails if not owner", () async {
-    final response =
-        await agents[4].put("/users/1", body: {"username": "a@a.com"});
-    expect(response, hasStatus(401));
+  test("GET /user/:username returns previously created User", () async {
+    await createUser();
+    var response = await harness.adminAgent.get("/user/gokr");
+    checkUser(response);
+  });
+
+  test("GET /self/:userid gives User including Installations", () async {
+    var userMap = await createUser();
+    var agent = await harness.createExistingAgent("gokr");
+    await harness.adminAgent.post("/user/${userMap["id"]}/installation/1");
+    var response = await agent.get("/self/gokr");
+    expect(
+        response,
+        hasResponse(200, body: {
+          "id": isInteger,
+          "email": isString,
+          "name": "Göran Krampe",
+          "created": isTimestamp,
+          "modified": isTimestamp,
+          "type": "bioservoUser",
+          "canInstallation": false,
+          "canBioservoUser": false,
+          "canDistributor": false,
+          "canSuperUser": false,
+          "canDebug": false,
+          "username": "gokr",
+          "distributor": null,
+          "customer": null,
+          "superUserInstallations": isList,
+          "userInstallations": [
+            {
+              "id": isInteger,
+              "user": {"id": isInteger},
+              "installation": {
+                "id": isInteger,
+                "created": isTimestamp,
+                "modified": isTimestamp,
+                "extId": "whatever",
+                "name": "Inst",
+                "description": "Cool",
+                "location": null,
+                "metadata": {"some": 42},
+                "customer": {"id": 1}
+              }
+            }
+          ]
+        }));
+  });
+
+  // test("GET /self/:userid gives 403 for other User than self", () async {
+  //   await createUser();
+  //   var agent = await harness.createSuperAgent();
+  //   var response = await agent.get("/self/gokr");
+  //   expect(response, hasResponse(400));
+  // });
+
+  test(
+      "GET /user/:userid/installation gives zero Installations if there are none",
+      () async {
+    var userMap = await createUser();
+    var response =
+        await harness.adminAgent.get("/user/${userMap["id"]}/installation");
+    expect(response, hasResponse(200, body: []));
+  });
+
+  test("DELETE /user/:userid/installation/:id removes access to Installation",
+      () async {
+    var userMap = await createUser();
+    await harness.adminAgent.post("/user/${userMap["id"]}/installation/1");
+    var response = await harness.adminAgent
+        .delete("/user/${userMap["id"]}/installation/1");
+    expect(response, hasResponse(200));
+    response =
+        await harness.adminAgent.get("/user/${userMap["id"]}/installation");
+    expect(response, hasResponse(200, body: []));
+  });
+
+  test(
+      "GET /installation/1/users gets all Users with access to Installation if it exists",
+      () async {
+    var userMap = await createUser();
+    await harness.adminAgent.post("/user/${userMap["id"]}/installation/1");
+    var response = await harness.adminAgent.get("/installation/1/users");
+    expect(
+        response,
+        hasResponse(200, body: [
+          {
+            "id": 2,
+            "email": "goran.krampe@bioservo.com",
+            "created": isTimestamp,
+            "modified": isTimestamp,
+            "type": "bioservoUser",
+            "customer": null,
+            "distributor": null,
+            "canInstallation": false,
+            "canBioservoUser": false,
+            "canDistributor": false,
+            "canSuperUser": false,
+            "canDebug": false,
+            "username": "gokr",
+            "name": "Göran Krampe"
+          }
+        ]));
+  });
+
+  test(
+      "GET /installation/1/users gets zero Users with access to Installation if there are none",
+      () async {
+    await createUser();
+    var response = await harness.adminAgent.get("/installation/1/users");
+    expect(response, hasResponse(200, body: []));
+  });
+
+  test("GET /installation/99/users gets 404 for missing Installation",
+      () async {
+    var response = await harness.adminAgent.get("/installation/99/users");
+    expect(response, hasResponse(404));
   });
 }

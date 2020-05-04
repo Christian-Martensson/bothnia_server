@@ -1,12 +1,10 @@
-import 'package:bothnia_server/controllers/register_controller.dart';
+import 'package:bothnia_server/service/basic_credential_verifier.dart';
 
 import 'bothnia_server.dart';
 import 'controllers/doc_controller.dart';
-import 'controllers/identity_controller.dart';
 import 'controllers/image_controller.dart';
 import 'controllers/upload_controller.dart';
 import 'controllers/user_controller.dart';
-import 'utility/html_template.dart';
 
 /// This type initializes an application.
 ///
@@ -15,14 +13,16 @@ import 'utility/html_template.dart';
 class BothniaChannel extends ApplicationChannel {
   ManagedContext context;
   AuthServer authServer;
+  BasicCredentialVerifier basicCredentialVerifier;
 
   @override
   Future prepare() async {
-    final config = MyConfig(options.configurationFilePath);
+    final config = BothniaConfiguration(options.configurationFilePath);
     context = contextWithConnectionInfo(config.database);
 
     final authStorage = ManagedAuthDelegate<User>(context);
     authServer = AuthServer(authStorage);
+    basicCredentialVerifier = BasicCredentialVerifier(context);
   }
 
   @override
@@ -39,7 +39,12 @@ class BothniaChannel extends ApplicationChannel {
     router.route("/auth/token").link(() => AuthController(authServer));
 
     // Set up auth code route- this grants temporary access codes that can be exchanged for token
-    router.route("/auth/code").link(() => AuthRedirectController(authServer));
+    //router.route("/auth/code").link(() => AuthRedirectController(authServer));
+
+    router
+      ..route("/user/[:username]")
+          //  .link(() => Authorizer.bearer(authServer, scopes: ["admin"]))
+          .link(() => UserController(context, authServer));
 
     // Set up protected route
     router
@@ -48,24 +53,6 @@ class BothniaChannel extends ApplicationChannel {
         .linkFunction((request) async {
       return Response.ok({"secret": "secret"});
     });
-
-    /* Create an account */
-    router
-        .route("/register")
-        //  .link(() => Authorizer.basic(authServer))
-        .link(() => RegisterController(context, authServer));
-
-    /* Gets profile for user with bearer token */
-    router
-        .route("/me")
-        .link(() => Authorizer.bearer(authServer))
-        .link(() => IdentityController(context));
-
-    /* Gets all users or one specific user by id */
-    router
-        .route("/users/[:id]")
-        .link(() => Authorizer.bearer(authServer))
-        .link(() => UserController(context, authServer));
 
     // IMAGES
     router.route("/image/original").link(() => ImageController(context));
@@ -99,8 +86,88 @@ class BothniaChannel extends ApplicationChannel {
   }
 }
 
-class MyConfig extends Configuration {
-  MyConfig(String path) : super.fromFile(File(path));
+class BothniaConfiguration extends Configuration {
+  BothniaConfiguration(String path) : super.fromFile(File(path));
 
   DatabaseConfiguration database;
+
+  /// This property is required.
+  //String host;
+}
+
+/// Return all possible scopes
+List<String> allScopes() {
+  List<String> scopes = [];
+  for (UserType type in UserType.values) {
+    scopes.add(type.toString().split('.').last);
+  }
+  scopes.add("canEditor");
+  scopes.add("canPhotographer");
+
+  print("Scopes: $scopes");
+  return scopes;
+}
+
+/// This class defines our rules for which users have what scopes. For the moment
+/// "admin" is the only user with all scopes.
+class TransformerAuthDelegate extends ManagedAuthDelegate<User> {
+  TransformerAuthDelegate(ManagedContext context, {int tokenLimit: 40})
+      : super(context, tokenLimit: tokenLimit);
+
+  @override
+
+  /// We override in order to also pull up type, canBioservo, canInstallation, canSuperUser
+  Future<User> getResourceOwner(AuthServer server, String username) {
+    final query = Query<User>(context)
+      ..where((u) => u.username).equalTo(username)
+      ..returningProperties((t) => [
+            t.id,
+            t.username,
+            t.hashedPassword,
+            t.salt,
+            t.type,
+            t.canEditor,
+          ]);
+    return query.fetchOne();
+  }
+
+  static String typeToString(UserType type) {
+    return type.toString().split(".").last;
+  }
+
+  @override
+
+  /// The possible List of scopes is the [UserType] and the canXXX permission flags.
+  /// The controllers then further use combinations of scopes to decide if the operation is allowed.
+  List<AuthScope> getAllowedScopes(covariant User user) {
+    var scopes = <AuthScope>[];
+    // Add one scope matching the UserType
+    scopes.add(AuthScope(typeToString(user.type)));
+    // Add further scopes based on UserType and permission flags
+    switch (user.type) {
+      case UserType.admin:
+        // Shortcut, admin match all scopes
+        return AuthScope.any;
+      case UserType.editor:
+        scopes.add(AuthScope(typeToString(UserType.editor)));
+        if (user.canEditor) {
+          scopes.add(AuthScope("canEditor"));
+        }
+        if (user.canPhotographer) {
+          scopes.add(AuthScope("canPhotographer"));
+        }
+        break;
+
+      case UserType.photographer:
+        scopes.add(AuthScope(typeToString(UserType.photographer)));
+        if (user.canPhotographer) {
+          scopes.add(AuthScope("canPhotographer"));
+        }
+        break;
+      case UserType.customer:
+        break;
+    }
+    print("Scopes: $scopes");
+    return scopes;
+  }
 }
