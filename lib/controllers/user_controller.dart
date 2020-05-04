@@ -31,6 +31,7 @@ class UserController extends ResourceController {
   Future<Response> getAllUsers() async {
     var found = await query.fetch();
     if (found == null) {
+      return Response.ok("mybody");
       return Response.notFound(body: 'No Users found');
     }
     return Response.ok(found);
