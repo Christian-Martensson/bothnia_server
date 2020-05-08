@@ -29,13 +29,11 @@ class BothniaChannel extends ApplicationChannel {
   Controller get entryPoint {
     final router = Router();
 
-    router.route("/exampless").linkFunction((request) async {
+    router.route("/example").linkFunction((request) async {
       return Response.ok({"key": "value"});
     });
 
-    router.route("/exampleagain").linkFunction((request) async {
-      return Response.ok({"key": "value"});
-    });
+    
 
     /* OAuth 2.0 Endpoints */
 
