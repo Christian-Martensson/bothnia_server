@@ -359,10 +359,10 @@
       "name": "bothnia_server",
       "rootUri": "../",
       "packageUri": "lib/",
-      "languageVersion": "2.8"
+      "languageVersion": "2.7"
     }
   ],
-  "generated": "2020-05-08T21:57:30.044398Z",
+  "generated": "2020-05-09T06:42:31.954442Z",
   "generator": "pub",
   "generatorVersion": "2.8.1"
 }
