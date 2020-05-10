@@ -1,4 +1,7 @@
+import 'dart:convert';
+
 import 'harness/app.dart';
+import 'package:http/http.dart' as http;
 
 Future main() async {
   Harness harness = new Harness()..install();
@@ -21,13 +24,23 @@ Future main() async {
   }
 
   Future<Map> createUser() async {
-    var response = await harness.adminAgent.post("/user", body: {
-      "username": "chrmrt",
-      "name": "Christian Mårtensson",
-      "type": "photographer",
-      "password": "chrmrt",
-    });
-    return checkUser(response);
+    Map<String, String> headers = {
+      'Content-type': 'application/json',
+    };
+    // var response = await harness.adminAgent.post("/user", body: {
+    var response = await http.post(
+      "http://94.237.89.244:7777/user",
+      headers: headers,
+      body: json.encode({
+        "username": "chrmrt",
+        "name": "Christian Mårtensson",
+        "type": "admin",
+        "password": "chrmrt",
+      }),
+    );
+
+    print(response);
+    // return checkUser(response);
   }
 
   test("POST /user creates a User", () async {

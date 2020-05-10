@@ -13,9 +13,7 @@ Future main() async {
       "/image",
       body: {
         "name": "My Picture",
-        "image": {
-          "content": base64String,
-        },
+        "base64": base64String,
       },
     );
 
