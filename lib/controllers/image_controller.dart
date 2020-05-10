@@ -14,13 +14,13 @@ class ImageController extends ResourceController {
   Future<Response> addImage(@Bind.body() Image image) async {
     // can we bind image and add base64 seperately?
 
-    final Map<String, dynamic> body = await request.body.decode();
-
-    final base64 = base64Decode(body["content"] as String);
+    //final Map<String, dynamic> body = await request.body.decode();
 
     imageQuery.values = image;
+    imageQuery.values.base64 = null;
     final insertedImage = await imageQuery.insert();
 
+    final base64 = base64Decode(image["base64"] as String);
     await File("public/${insertedImage.id}.jpg").writeAsBytes(base64);
 
     return Response.ok(insertedImage);

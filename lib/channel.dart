@@ -31,6 +31,8 @@ class BothniaChannel extends ApplicationChannel {
   Controller get entryPoint {
     final router = Router();
 
+    router.route("/image/[:id]").link(() => ImageController(context));
+
     router
         .route("/photographer/[:id]")
         .link(() => PhotographerController(context));
@@ -57,13 +59,6 @@ class BothniaChannel extends ApplicationChannel {
         .route("/user/[:username]")
         //  .link(() => Authorizer.bearer(authServer, scopes: ["admin"]))
         .link(() => UserController(context, authServer));
-
-    // IMAGES
-    router.route("/image/original").link(() => ImageController(context));
-
-    //router.route("/category/[:id]").link(() => CategoryController(context));
-
-    //router.route("/image/[:id]").link(() => ImageController(context));
 
     // for accessing a file, e.g. "ip/files/test.jpg"
     router.route("/files/*").link(() => FileController("public/"));

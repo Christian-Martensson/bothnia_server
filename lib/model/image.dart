@@ -54,6 +54,9 @@ class _Image {
   @Column(defaultValue: "false")
   bool isPublicallyAdded;
 
+  @Column(nullable: true)
+  String base64;
+
   //ManagedSet<Image> versions;
 
   ManagedSet<ImageToTag> imageTags;
