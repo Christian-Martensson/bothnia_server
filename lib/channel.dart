@@ -38,6 +38,10 @@ class BothniaChannel extends ApplicationChannel {
       return Response.ok({"key": "value"});
     });
 
+    router.route("/example2").linkFunction((request) async {
+      return Response.ok({"key": "value"});
+    });
+
     /* OAuth 2.0 Endpoints */
 
     // Set up auth token route- this grants and refresh tokens
