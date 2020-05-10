@@ -41,32 +41,22 @@ class BothniaChannel extends ApplicationChannel {
       return Response.ok({"key": "value"});
     });
 
-    router.route("/example2").linkFunction((request) async {
-      return Response.ok({"key": "value"});
-    });
-
-    /* OAuth 2.0 Endpoints */
-
     // Set up auth token route- this grants and refresh tokens
     router.route("/auth/token").link(() => AuthController(authServer));
-
     // Set up auth code route- this grants temporary access codes that can be exchanged for token
     //router.route("/auth/code").link(() => AuthRedirectController(authServer));
 
-    router
-      ..route("/user/[:username]")
-          //  .link(() => Authorizer.bearer(authServer, scopes: ["admin"]))
-          .linkFunction((request) async {
-        return Response.ok({"key": "value"});
-      }).link(() => UserController(context, authServer));
-
-    // Set up protected route
     router
         .route("/protected")
         .link(() => Authorizer.bearer(authServer))
         .linkFunction((request) async {
       return Response.ok({"secret": "secret"});
     });
+
+    router
+        .route("/user/[:username]")
+        //  .link(() => Authorizer.bearer(authServer, scopes: ["admin"]))
+        .link(() => UserController(context, authServer));
 
     // IMAGES
     router.route("/image/original").link(() => ImageController(context));

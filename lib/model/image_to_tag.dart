@@ -10,5 +10,5 @@ class _ImageToTag {
   Tag tag;
 
   @Relate(#imageTags)
-  ImageMetaData imageMetaData;
+  Image image;
 }

@@ -5,25 +5,14 @@ import 'harness/app.dart';
 Future main() async {
   final harness = Harness()..install();
 
-  test("POST /image/original with minimum data", () async {
-    final res1 = await harness.agent.post(
-      "/category",
-      body: {
-        "name": "Category 1",
-        "description": "Very first",
-      },
-    );
-
-    print(res1.body);
-
+  test("POST /image with minimum data", () async {
     final base64String =
         base64Encode(await File("test/test_assets/test.jpg").readAsBytes());
 
     final res = await harness.agent.post(
-      "/image/original",
+      "/image",
       body: {
         "name": "My Picture",
-        "category": 1,
         "image": {
           "content": base64String,
         },

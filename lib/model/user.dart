@@ -31,7 +31,7 @@ class _User extends ResourceOwnerTableDefinition {
   @Column(defaultValue: "'customer'")
   UserType type;
 
-  ManagedSet<ImageMetaData> images; //images uploaded by user
+  ManagedSet<Image> images; //images uploaded by user
 
   @Column(defaultValue: "false")
   bool canEditor = false;

@@ -17,19 +17,50 @@ class _Image {
   @primaryKey
   int id;
 
-  //isNull if original
-  @Column(nullable: true)
-  String description; //e.g. "cropped and saturated"
+  String name;
 
   @Column(nullable: true)
-  String resolution;
+  String description;
 
-  int version;
+  //not needed as path is just the endpoint/$id
+  //String imagePath;
 
   DateTime created;
 
   DateTime modified;
 
-  @Relate(#versions, isRequired: true, onDelete: DeleteRule.cascade)
-  ImageMetaData imageMetaData;
+  // nullable in case EXIF is missing
+  @Column(nullable: true)
+  DateTime captured;
+
+  @Column(nullable: true)
+  DateTime firstPubDate;
+
+  @Column(nullable: true)
+  String xCoordinates;
+
+  @Column(nullable: true)
+  String yCoordinates;
+
+  @Column(nullable: true)
+  String license;
+
+  @Column(nullable: true)
+  int usesLeft;
+
+  @Column(nullable: true)
+  String resolution;
+
+  @Column(defaultValue: "false")
+  bool isPublicallyAdded;
+
+  //ManagedSet<Image> versions;
+
+  ManagedSet<ImageToTag> imageTags;
+
+  @Relate(#images)
+  Photographer photographer;
+
+  @Relate(#images)
+  User user;
 }

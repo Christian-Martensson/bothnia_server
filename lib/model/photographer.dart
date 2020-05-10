@@ -17,5 +17,5 @@ class _Photographer {
   @Column(nullable: true)
   String phone;
 
-  ManagedSet<ImageMetaData> images;
+  ManagedSet<Image> images;
 }

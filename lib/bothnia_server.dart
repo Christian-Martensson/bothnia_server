@@ -9,7 +9,6 @@ export 'dart:io';
 export 'package:aqueduct/aqueduct.dart';
 
 // model
-export 'package:bothnia_server/model/image_meta_data.dart';
 export 'package:bothnia_server/model/image.dart';
 export 'package:bothnia_server/model/photographer.dart';
 export 'package:bothnia_server/model/user.dart';

@@ -11,39 +11,37 @@ import '../bothnia_server.dart';
 class ImageController extends ResourceController {
   ImageController(this.context) {
     imageQuery = Query<Image>(context);
-    metaQuery = Query<ImageMetaData>(context);
   }
   ManagedContext context;
 
   Query<Image> imageQuery;
-  Query<ImageMetaData> metaQuery;
 
-  @Operation.post()
-  Future<Response> createOriginal() async {
-    //todo: extract EXIF and add capture time
+  // @Operation.post()
+  // Future<Response> addImage() async {
+  //   //todo: extract EXIF and add capture time
 
-    final body = await request.body.decode();
+  //   final Map<String, dynamic> body = await request.body.decode();
 
-    metaQuery.values.name = body["name"] as String;
+  //   final image = base64Decode(body["content"] as String);
 
-    final insertedMeta = await metaQuery.insert();
+  //   imageQuery.values
+  //     ..name = body["name"] as String
+  //     ..xCoordinates;
 
-    final image = base64Decode(body["image"]["content"] as String);
+  //   //todo: check that the name doesn't have the .jpg suffix already
 
-    //todo: check that the name doesn't have the .jpg suffix already
+  //   // imageQuery.values
+  //   //   ..version = 1
+  //   //   ..imageMetaData.id = insertedMeta.id;
 
-    imageQuery.values
-      ..version = 1
-      ..imageMetaData.id = insertedMeta.id;
+  //   final insertedImage = await imageQuery.insert();
 
-    final insertedImage = await imageQuery.insert();
+  //   final file =
+  //       await File("public/${insertedImage.id}.jpg").writeAsBytes(image);
 
-    final file =
-        await File("public/${insertedImage.id}.jpg").writeAsBytes(image);
-
-    // return it the same way as a join would look
-    final map = insertedMeta.asMap();
-    map["image"] = insertedImage.asMap();
-    return Response.ok(map);
-  }
+  //   // return it the same way as a join would look
+  //   final map = insertedMeta.asMap();
+  //   map["image"] = insertedImage.asMap();
+  //   return Response.ok(map);
+  // }
 }
