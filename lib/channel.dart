@@ -1,4 +1,5 @@
 import 'package:bothnia_server/controllers/photographer_controller.dart';
+import 'package:bothnia_server/controllers/tag_controller.dart';
 import 'package:bothnia_server/service/basic_credential_verifier.dart';
 
 import 'bothnia_server.dart';
@@ -33,6 +34,8 @@ class BothniaChannel extends ApplicationChannel {
     router
         .route("/photographer/[:id]")
         .link(() => PhotographerController(context));
+
+    router.route("/tag/[:id]").link(() => TagController(context));
 
     router.route("/example").linkFunction((request) async {
       return Response.ok({"key": "value"});
