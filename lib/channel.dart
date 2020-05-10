@@ -1,3 +1,4 @@
+import 'package:bothnia_server/controllers/photographer_controller.dart';
 import 'package:bothnia_server/service/basic_credential_verifier.dart';
 
 import 'bothnia_server.dart';
@@ -29,11 +30,11 @@ class BothniaChannel extends ApplicationChannel {
   Controller get entryPoint {
     final router = Router();
 
+    router.route("/photographer").link(() => PhotographerController(context));
+
     router.route("/example").linkFunction((request) async {
       return Response.ok({"key": "value"});
     });
-
-    
 
     /* OAuth 2.0 Endpoints */
 
