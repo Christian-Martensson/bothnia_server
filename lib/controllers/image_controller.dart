@@ -15,11 +15,12 @@ class ImageController extends ResourceController {
     // can we bind image and add base64 seperately?
 
     //final Map<String, dynamic> body = await request.body.decode();
-    return Response.ok({"key": "value"});
+    //return Response.ok({"key": "value"});
 
     query.values = image;
-    query.values.base64 = null;
+    //query.values.base64 = null;
     final insertedImage = await query.insert();
+    return Response.ok(insertedImage);
 
     final base64 = base64Decode(image["base64"] as String);
     await File("public/${insertedImage.id}.jpg").writeAsBytes(base64);
