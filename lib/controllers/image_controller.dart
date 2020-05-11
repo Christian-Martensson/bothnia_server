@@ -18,7 +18,7 @@ class ImageController extends ResourceController {
     //return Response.ok({"key": "value"});
 
     query.values = image;
-    //query.values.base64 = null;
+    query.values.base64 = null;
     final insertedImage = await query.insert();
 
     final base64 = base64Decode(image["base64"] as String);
