@@ -11,8 +11,9 @@ class ImageController extends ResourceController {
   Query<Image> query;
 
   @Operation.post()
-  Future<Response> addImage(
-      @Bind.body() Image image, @Bind.body() Image image2) async {
+  Future<Response> addImage(@Bind.body(ignore: ["tags"]) Image image) async {
+    final r = await request.body.decode();
+
     query.values = image;
     query.values.base64 = null;
     final insertedImage = await query.insert();
@@ -20,23 +21,52 @@ class ImageController extends ResourceController {
     await File("public/${insertedImage.id}.jpg").writeAsBytes(base64);
 
     final body = await request.body.decode();
-    final List<String> tags = body["imagetags"] as List<String>;
+    final List<dynamic> tags = r["tags"] as List<dynamic>;
 
-    var futures = <Future>[];
+    for (var tag in tags) {
+      Query<Tag> tagQuery = Query<Tag>(context);
+      Query<ImageToTag> imageTagQuery = Query<ImageToTag>(context);
 
-    tags.forEach((tag) async {
-      Query<ImageToTag> imageTagQuery;
-      Query<Tag> tagQuery;
-      tagQuery.values.name = tag;
-
+      tagQuery.values.name = tag as String;
       final insertedTag = await tagQuery.insert();
       imageTagQuery.values
         ..tag.id = insertedTag.id
         ..image.id = insertedImage.id;
-      futures.add(imageTagQuery.insert());
+      await imageTagQuery.insert();
+    }
+
+    query.where((g) => g.id).equalTo(insertedImage.id);
+    query.join(object: (image) => image.photographer);
+    query.join(object: (image) => image.user);
+    query
+        .join(set: (image) => image.imageTags)
+        .join(object: (imageToTag) => imageToTag.tag);
+
+    var res = await query.fetchOne();
+
+    return Response.ok(res);
+
+    // final res = await getImage(insertedImage.id);
+    return Response.ok(res);
+    return Response.ok(await getImage(insertedImage.id));
+
+    //var futures = <Future>[];
+
+    tags.forEach((tag) async {
+      Query<ImageToTag> imageTagQuery = Query<ImageToTag>(context);
+      Query<Tag> tagQuery = Query<Tag>(context);
+      tagQuery.values.name = tag as String;
+
+      final insertedTag = await tagQuery.insert();
+      return Response.ok(insertedTag);
+      imageTagQuery.values
+        ..tag.id = insertedTag.id
+        ..image.id = insertedImage.id;
+      await imageTagQuery.insert();
+      //  futures.add(imageTagQuery.insert());
     });
 
-    await Future.wait(futures);
+    //await Future.wait(futures);
 
     return Response.ok(await getImage(insertedImage.id));
   }
