@@ -5,7 +5,6 @@ import 'package:http/http.dart' as http;
 
 Map<String, String> headers = {
   'Content-type': 'application/json',
-//  'Accept': 'application/json',
 };
 
 Future main() async {

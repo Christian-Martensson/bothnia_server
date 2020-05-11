@@ -5,7 +5,8 @@ import 'package:bothnia_server/service/basic_credential_verifier.dart';
 import 'bothnia_server.dart';
 import 'controllers/doc_controller.dart';
 import 'controllers/image_controller.dart';
-import 'controllers/upload_controller.dart';
+import 'controllers/image_tag_controller.dart';
+
 import 'controllers/user_controller.dart';
 
 /// This type initializes an application.
@@ -39,6 +40,8 @@ class BothniaChannel extends ApplicationChannel {
 
     router.route("/tag/[:id]").link(() => TagController(context));
 
+    router.route("/image/[:id]").link(() => ImageTagController(context));
+
     router.route("/example").linkFunction((request) async {
       return Response.ok({"key": "value"});
     });
@@ -62,9 +65,6 @@ class BothniaChannel extends ApplicationChannel {
 
     // for accessing a file, e.g. "ip/files/test.jpg"
     router.route("/files/*").link(() => FileController("public/"));
-
-    // for uploading images using base64Encoded in json.
-    router.route("/upload").link(() => UploadController(context));
 
     // for serving the API docs
     router.route("/doc").link(() => DocController(context));
