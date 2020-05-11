@@ -5,7 +5,7 @@ import 'package:http/http.dart' as http;
 
 Map<String, String> headers = {
   'Content-type': 'application/json',
-  'Accept': 'application/json',
+//  'Accept': 'application/json',
 };
 
 Future main() async {
@@ -24,7 +24,7 @@ Future main() async {
     );
   }
 
-  test("POST /image", () async {
+  test("POST /image basic to actual server", () async {
     final base64String =
         base64Encode(await File("test/test_assets/test.jpg").readAsBytes());
     final res = await http.post(
@@ -39,6 +39,46 @@ Future main() async {
       }),
     );
 
+    // expect(
+    //     res,
+    //     hasResponse(
+    //       200,
+    //       body: {
+    //         "id": isInteger,
+    //         "name": "My Picture",
+    //         "description": "very pretty",
+    //         "base64": isNull,
+    //         "created": isString,
+    //         "modified": isString,
+    //         "captured": isString,
+    //         "firstPubDate": isString,
+    //         "xCoordinates": isString,
+    //         "yCoordinates": isString,
+    //         "license": isString,
+    //         "usesLeft": isInteger,
+    //         "resolution": isString,
+    //         "isPublicallyAdded": false,
+    //         "photographer": {"id": 1},
+    //         "user": {"id": 1}
+    //       },
+    //     ));
+  });
+
+  test("POST /image", () async {
+    final base64String =
+        base64Encode(await File("test/test_assets/test.jpg").readAsBytes());
+    final res = await harness.agent.post(
+      "http://94.237.89.244:7777/image",
+      body: {
+        "name": "My Picture",
+        "description": "very pretty",
+        "base64": base64String,
+        "resolution": "2880x1880",
+        "photographer": {"id": 1},
+        "user": {"id": 1},
+      },
+    );
+
     expect(
         res,
         hasResponse(
@@ -50,32 +90,32 @@ Future main() async {
             "base64": isNull,
             "created": isString,
             "modified": isString,
-            "captured": isString,
-            "firstPubDate": isString,
-            "xCoordinates": isString,
-            "yCoordinates": isString,
-            "license": isString,
-            "usesLeft": isInteger,
+            "captured": isNull,
+            "firstPubDate": isNull,
+            "xCoordinates": isNull,
+            "yCoordinates": isNull,
+            "license": isNull,
+            "usesLeft": isNull,
             "resolution": isString,
             "isPublicallyAdded": false,
             "photographer": {"id": 1},
             "user": {"id": 1}
           },
         ));
-
-    // expectResponse(res, 200);
   });
 
-  test("POST /image to server with minimum data", () async {
+  test("POST /image with all data", () async {
     final base64String =
         base64Encode(await File("test/test_assets/test.jpg").readAsBytes());
-
     final res = await harness.agent.post(
-      "/image",
+      "http://94.237.89.244:7777/image",
       body: {
         "name": "My Picture",
         "description": "very pretty",
         "base64": base64String,
+        "resolution": "2880x1880",
+        "photographer": {"id": 1},
+        "user": {"id": 1},
       },
     );
 
@@ -83,26 +123,25 @@ Future main() async {
         res,
         hasResponse(
           200,
-          // body: {
-          //   "id": 0,
-          //   "name": "string",
-          //   "description": "string",
-          //   "created": "2020-05-10T22:02:32Z",
-          //   "modified": "2020-05-10T22:02:32Z",
-          //   "captured": "2020-05-10T22:02:32Z",
-          //   "firstPubDate": "2020-05-10T22:02:32Z",
-          //   "xCoordinates": "string",
-          //   "yCoordinates": "string",
-          //   "license": "string",
-          //   "usesLeft": 0,
-          //   "resolution": "string",
-          //   "isPublicallyAdded": "false",
-          //   "photographer": {"id": 0},
-          //   "user": {"id": 0}
-          // },
+          body: {
+            "id": isInteger,
+            "name": "My Picture",
+            "description": "very pretty",
+            "base64": isNull,
+            "created": isString,
+            "modified": isString,
+            "captured": isNull,
+            "firstPubDate": isNull,
+            "xCoordinates": isNull,
+            "yCoordinates": isNull,
+            "license": isNull,
+            "usesLeft": isNull,
+            "resolution": isString,
+            "isPublicallyAdded": false,
+            "photographer": {"id": 1},
+            "user": {"id": 1}
+          },
         ));
-
-    // expectResponse(res, 200);
   });
 
   test("GET /image", () async {
