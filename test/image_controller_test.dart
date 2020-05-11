@@ -34,8 +34,8 @@ Future main() async {
         "name": "My Picture",
         "description": "very pretty",
         "base64": base64String,
-        // "photographer": {"id": 1},
-        // "user": {"id": 1},
+        "photographer": {"id": 1},
+        "user": {"id": 1},
       }),
     );
 
@@ -47,6 +47,7 @@ Future main() async {
             "id": isInteger,
             "name": "My Picture",
             "description": "very pretty",
+            "base64": isNull,
             "created": isString,
             "modified": isString,
             "captured": isString,
