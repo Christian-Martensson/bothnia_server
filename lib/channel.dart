@@ -40,7 +40,7 @@ class BothniaChannel extends ApplicationChannel {
 
     router.route("/tag/[:id]").link(() => TagController(context));
 
-    router.route("/image/[:id]").link(() => ImageTagController(context));
+    router.route("/imagetag/[:id]").link(() => ImageTagController(context));
 
     router.route("/example").linkFunction((request) async {
       return Response.ok({"key": "value"});
