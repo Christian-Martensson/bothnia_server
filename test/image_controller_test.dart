@@ -3,6 +3,8 @@ import 'dart:convert';
 import 'harness/app.dart';
 import 'package:http/http.dart' as http;
 
+import 'utilities.dart';
+
 Map<String, String> headers = {
   'Content-type': 'application/json',
 };
@@ -110,7 +112,9 @@ Future main() async {
   });
 
   test("GET /image", () async {
-    //POST [Photographer]
+    List<String> tags = ["björn", "älg", "kungafamiljen"];
+
+    //POST /photographer
     var res;
     res = await harness.agent.post("/photographer", body: {
       "fName": "Chris",
@@ -119,7 +123,7 @@ Future main() async {
     res = await res.body.decode();
     final photographerId = res["id"];
 
-    //POST [User]
+    //POST /user
     res = await harness.agent.post("/user", body: {
       "username": "chrmrt",
       "password": "chrmrt",
@@ -129,7 +133,7 @@ Future main() async {
     res = await res.body.decode();
     final userId = res["id"];
 
-    //POST [Image]
+    //POST /image
     final base64String =
         base64Encode(await File("test/test_assets/test.jpg").readAsBytes());
     res = await harness.agent.post(
@@ -143,10 +147,17 @@ Future main() async {
     );
 
     final body = await res.body.decode();
-    final id = body["id"];
+    final imageId = body["id"];
+
+    tags.forEach((tag) async {
+      //POST /tag
+      final tagId = await createTag(harness, tag);
+      //POST /imagetag
+      await addTagToImage(harness, imageId, tagId);
+    });
 
     res = await harness.agent.get(
-      "/image/$id",
+      "/image/$imageId",
     );
 
     expect(
