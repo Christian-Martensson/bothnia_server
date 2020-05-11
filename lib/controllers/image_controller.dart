@@ -35,4 +35,15 @@ class ImageController extends ResourceController {
 
     //final Map<String, dynamic> body = await request.body.decode();
   }
+
+  @Operation.get("id")
+  Future<Response> getImage(@Bind.path('id') int id) async {
+    query.where((g) => g.id).equalTo(id);
+    query.join(object: (image) => image.photographer);
+    query.join(object: (image) => image.user);
+
+    var res = await query.fetchOne();
+
+    return Response.ok(res);
+  }
 }

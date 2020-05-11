@@ -11,19 +11,6 @@ Map<String, String> headers = {
 Future main() async {
   final harness = Harness()..install();
 
-  addImage() async {
-    final base64String =
-        base64Encode(await File("test/test_assets/test.jpg").readAsBytes());
-    final res = await harness.agent.post(
-      "/image",
-      body: {
-        "name": "My Picture",
-        "description": "very pretty",
-        "base64": base64String,
-      },
-    );
-  }
-
   test("POST /image basic to actual server", () async {
     final base64String =
         base64Encode(await File("test/test_assets/test.jpg").readAsBytes());
@@ -38,44 +25,16 @@ Future main() async {
         "user": {"id": 1},
       }),
     );
-
-    // expect(
-    //     res,
-    //     hasResponse(
-    //       200,
-    //       body: {
-    //         "id": isInteger,
-    //         "name": "My Picture",
-    //         "description": "very pretty",
-    //         "base64": isNull,
-    //         "created": isString,
-    //         "modified": isString,
-    //         "captured": isString,
-    //         "firstPubDate": isString,
-    //         "xCoordinates": isString,
-    //         "yCoordinates": isString,
-    //         "license": isString,
-    //         "usesLeft": isInteger,
-    //         "resolution": isString,
-    //         "isPublicallyAdded": false,
-    //         "photographer": {"id": 1},
-    //         "user": {"id": 1}
-    //       },
-    //     ));
   });
 
-  test("POST /image", () async {
+  test("POST /image with minimum data", () async {
     final base64String =
         base64Encode(await File("test/test_assets/test.jpg").readAsBytes());
     final res = await harness.agent.post(
-      "http://94.237.89.244:7777/image",
+      "/image",
       body: {
         "name": "My Picture",
-        "description": "very pretty",
         "base64": base64String,
-        "resolution": "2880x1880",
-        "photographer": {"id": 1},
-        "user": {"id": 1},
       },
     );
 
@@ -86,7 +45,7 @@ Future main() async {
           body: {
             "id": isInteger,
             "name": "My Picture",
-            "description": "very pretty",
+            "description": isNull,
             "base64": isNull,
             "created": isString,
             "modified": isString,
@@ -104,16 +63,23 @@ Future main() async {
         ));
   });
 
-  test("POST /image with all data", () async {
+  test("POST /image with maximum data", () async {
+    final String timeNow = DateTime.now().toIso8601String();
     final base64String =
         base64Encode(await File("test/test_assets/test.jpg").readAsBytes());
     final res = await harness.agent.post(
       "http://94.237.89.244:7777/image",
       body: {
         "name": "My Picture",
-        "description": "very pretty",
+        "description": "the best picture",
         "base64": base64String,
         "resolution": "2880x1880",
+        "captured": timeNow,
+        "firstPubDate": timeNow,
+        "xCoordinates": "40.689263",
+        "yCoordinates": "-74.044505",
+        "license": "Köpt från GreatMedia AB för begränsad användning: 5 gånger",
+        "usesLeft": 5,
         "photographer": {"id": 1},
         "user": {"id": 1},
       },
@@ -126,17 +92,17 @@ Future main() async {
           body: {
             "id": isInteger,
             "name": "My Picture",
-            "description": "very pretty",
+            "description": "the best picture",
             "base64": isNull,
+            "resolution": isString,
             "created": isString,
             "modified": isString,
-            "captured": isNull,
-            "firstPubDate": isNull,
+            "captured": timeNow,
+            "firstPubDate": timeNow,
             "xCoordinates": isNull,
             "yCoordinates": isNull,
             "license": isNull,
             "usesLeft": isNull,
-            "resolution": isString,
             "isPublicallyAdded": false,
             "photographer": {"id": 1},
             "user": {"id": 1}
@@ -145,12 +111,50 @@ Future main() async {
   });
 
   test("GET /image", () async {
-    await addImage();
-    final res = await harness.agent.get(
+    //POST [Photographer]
+    var res;
+    res = await harness.agent.post("/photographer", body: {
+      "fName": "Chris",
+      "lName": "Mar",
+    });
+    res = await res.body.decode();
+    final photographerId = res["id"];
+
+    //POST [User]
+    res = await harness.agent.post("/user", body: {
+      "username": "chrmrt",
+      "password": "chrmrt",
+      "name": "Christian Mårtensson",
+      "type": "photographer",
+    });
+    res = await res.body.decode();
+    final userId = res["id"];
+
+    //POST [Image]
+    final base64String =
+        base64Encode(await File("test/test_assets/test.jpg").readAsBytes());
+    res = await harness.agent.post(
       "/image",
+      body: {
+        "name": "My Picture",
+        "base64": base64String,
+        "photographer": {"id": photographerId},
+        "user": {"id": userId}
+      },
     );
 
-    expect(res, hasResponse(200));
+    final body = await res.body.decode();
+    final id = body["id"];
+
+    res = await harness.agent.get(
+      "/image/$id",
+    );
+
+    expect(
+        res,
+        hasResponse(
+          200,
+        ));
   });
 
   // test("POST /image with minimum data", () async {
