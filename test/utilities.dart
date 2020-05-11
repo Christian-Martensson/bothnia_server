@@ -1,4 +1,10 @@
+import 'dart:convert';
+
 import 'harness/app.dart';
+
+getTestImage() async {
+  return base64Encode(await File("test/test_assets/test.jpg").readAsBytes());
+}
 
 Future<dynamic> createTag(Harness harness, String name) async {
   final res = await harness.agent.post(
