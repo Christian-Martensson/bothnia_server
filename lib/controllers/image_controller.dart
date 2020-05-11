@@ -43,8 +43,7 @@ class ImageController extends ResourceController {
     query.join(object: (image) => image.user);
     query
         .join(set: (image) => image.imageTags)
-        .join(object: (imageToTag) => imageToTag.tag)
-        .returningProperties((tag) => [tag.name]);
+        .join(object: (imageToTag) => imageToTag.tag);
 
     var res = await query.fetchOne();
 
