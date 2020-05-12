@@ -7,6 +7,7 @@ import 'controllers/doc_controller.dart';
 import 'controllers/image_controller.dart';
 import 'controllers/image_tag_controller.dart';
 
+import 'controllers/tag_find_controller.dart';
 import 'controllers/user_controller.dart';
 
 /// This type initializes an application.
@@ -39,6 +40,7 @@ class BothniaChannel extends ApplicationChannel {
         .link(() => PhotographerController(context));
 
     router.route("/tag/[:id]").link(() => TagController(context));
+    router.route("/tag/find").link(() => TagFindController(context));
 
     router.route("/imagetag/[:id]").link(() => ImageTagController(context));
 

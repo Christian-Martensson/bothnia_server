@@ -138,9 +138,14 @@ Future main() async {
     });
     res = await res.body.decode();
     final userId = res["id"];
+    await harness.agent.post(
+      "/tag",
+      body: {
+        "name": "björn",
+      },
+    );
 
     //POST /image
-
     res = await harness.agent.post(
       "/image",
       body: {
@@ -151,17 +156,24 @@ Future main() async {
         "tags": ["björn", "älg", "kungafamiljen"],
       },
     );
+    // var resnew = await harness.agent.post(
+    //   "/tag",
+    //   body: {
+    //     "name": "björn",
+    //   },
+    // );
+    // var body2 = await resnew.body.decode();
 
     final body = await res.body.decode();
     final imageId = body["id"];
 
-    final List<String> tags = ["björn", "älg", "kungafamiljen"];
-    tags.forEach((tag) async {
-      //POST /tag
-      final tagId = await createTag(harness, tag);
-      //POST /imagetag
-      await addTagToImage(harness, imageId, tagId);
-    });
+    // final List<String> tags = ["björn", "älg", "kungafamiljen"];
+    // tags.forEach((tag) async {
+    //   //POST /tag
+    //   final tagId = await createTag(harness, tag);
+    //   //POST /imagetag
+    //   await addTagToImage(harness, imageId, tagId);
+    // });
 
     // await Future.delayed(const Duration(seconds: 3)).then((onValue) async {
     //   res = await harness.agent.get(
