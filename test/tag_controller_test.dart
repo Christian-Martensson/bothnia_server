@@ -15,4 +15,20 @@ Future main() async {
           "name": "fotboll",
         }));
   });
+
+  test("POST /tag duplicate returns existing tag ", () async {
+    var res = await harness.agent.post("/tag", body: {
+      "name": "fotboll",
+    });
+    res = await harness.agent.post("/tag", body: {
+      "name": "fotboll",
+    });
+
+    expect(
+        res,
+        hasResponse(200, body: {
+          "id": 1,
+          "name": "fotboll",
+        }));
+  });
 }
