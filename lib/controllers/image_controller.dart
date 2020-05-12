@@ -40,18 +40,18 @@ class ImageController extends ResourceController {
       }
     }
 
-    await Future.wait(futures).then((onValue) async {
-      query.where((g) => g.id).equalTo(insertedImage.id);
-      query.join(object: (image) => image.photographer);
-      query.join(object: (image) => image.user);
-      query
-          .join(set: (image) => image.imageTags)
-          .join(object: (imageToTag) => imageToTag.tag);
+    await Future.wait(futures);
 
-      var res = await query.fetchOne();
+    query.where((g) => g.id).equalTo(insertedImage.id);
+    query.join(object: (image) => image.photographer);
+    query.join(object: (image) => image.user);
+    query
+        .join(set: (image) => image.imageTags)
+        .join(object: (imageToTag) => imageToTag.tag);
 
-      return Response.ok(res);
-    });
+    var res = await query.fetchOne();
+
+    return Response.ok(res);
   }
 
   @Operation.get()
