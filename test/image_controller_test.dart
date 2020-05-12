@@ -22,7 +22,7 @@ Future main() async {
         "base64": await getTestImage(),
         "photographer": {"id": 1},
         "user": {"id": 1},
-        // "tags": ["tag3", "tag4"]
+        "tags": ["tag3", "tag4"]
       }),
     );
     print(res);

@@ -22,6 +22,7 @@ class ImageController extends ResourceController {
 
     final body = await request.body.decode();
     final List<dynamic> tags = r["tags"] as List<dynamic>;
+    return Response.ok(tags);
     if (tags != null) {
       for (var tag in tags) {
         Query<Tag> tagQuery = Query<Tag>(context);
