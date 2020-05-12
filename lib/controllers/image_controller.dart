@@ -12,7 +12,10 @@ class ImageController extends ResourceController {
 
   @Operation.post()
   Future<Response> addImage(@Bind.body(ignore: ["tags"]) Image image) async {
-    final r = await request.body.decode();
+    if (image.base64 == null) {
+      return Response.badRequest(
+          body: {"error": "base64 String missing from request"});
+    }
 
     query.values = image;
     query.values.base64 = null;
@@ -21,7 +24,7 @@ class ImageController extends ResourceController {
     await File("public/${insertedImage.id}.jpg").writeAsBytes(base64);
 
     final body = await request.body.decode();
-    final List<dynamic> tags = r["tags"] as List<dynamic>;
+    final List<dynamic> tags = body["tags"] as List<dynamic>;
 
     var futures = <Future>[];
 
@@ -82,11 +85,6 @@ class ImageController extends ResourceController {
   @Operation.put('id')
   Future<Response> updateImage(
       @Bind.path('id') int id, @Bind.body() Image image) async {
-    final base64 = image["base64"];
-
-    // needed?
-    image["id"] = null;
-    image["base64"] = null;
     query
       ..where((u) => u.id).equalTo(id)
       ..values = image;

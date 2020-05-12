@@ -25,8 +25,7 @@ Future main() async {
         "tags": ["testTag1", "testTag2"]
       }),
     );
-    print(res);
-    print(res.body);
+
     print(res.body);
   });
 
@@ -223,7 +222,7 @@ Future main() async {
       "/image",
       body: {
         "name": "OldName",
-        "base64": getTestImage(),
+        "base64": await getTestImage(),
       },
     );
 
@@ -234,7 +233,7 @@ Future main() async {
 
     res = await harness.agent.put("/image/$imageId", body: body);
 
-    expect(res, hasResponse(200));
+    expect(res, hasResponse(200, body: partial({"name": "NewName"})));
   });
   test("DELETE /image", () async {
     //POST /image
