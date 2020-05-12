@@ -264,4 +264,27 @@ Future main() async {
 
     expect(res, hasResponse(200));
   });
+
+  test("POST /image with shared tags does not cause conflict", () async {
+    final res1 = await harness.agent.post(
+      "/image",
+      body: {
+        "name": "My Picture",
+        "base64": await getTestImage(),
+        "tags": ["älg,björn"],
+      },
+    );
+
+    final res2 = await harness.agent.post(
+      "/image",
+      body: {
+        "name": "My Picture",
+        "base64": await getTestImage(),
+        "tags": ["älg, zebra"],
+      },
+    );
+
+    expect(res1, hasResponse(200));
+    expect(res2, hasResponse(200));
+  });
 }
