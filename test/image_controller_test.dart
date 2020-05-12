@@ -22,10 +22,12 @@ Future main() async {
         "base64": await getTestImage(),
         "photographer": {"id": 1},
         "user": {"id": 1},
-        "tags": ["tag7", "tag8"]
+        "tags": ["testTag1", "testTag2"]
       }),
     );
     print(res);
+    print(res.body);
+    print(res.body);
   });
 
   test("POST /image with minimum data", () async {
