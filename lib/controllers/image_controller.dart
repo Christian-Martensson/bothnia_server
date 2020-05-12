@@ -22,7 +22,9 @@ class ImageController extends ResourceController {
 
     final body = await request.body.decode();
     final List<dynamic> tags = r["tags"] as List<dynamic>;
-    return Response.ok(tags);
+
+    var futures = <Future>[];
+
     if (tags != null) {
       for (var tag in tags) {
         Query<Tag> tagQuery = Query<Tag>(context);
@@ -33,19 +35,23 @@ class ImageController extends ResourceController {
         imageTagQuery.values
           ..tag.id = insertedTag.id
           ..image.id = insertedImage.id;
-        await imageTagQuery.insert();
+        //await imageTagQuery.insert();
+        futures.add(imageTagQuery.insert());
       }
     }
-    query.where((g) => g.id).equalTo(insertedImage.id);
-    query.join(object: (image) => image.photographer);
-    query.join(object: (image) => image.user);
-    query
-        .join(set: (image) => image.imageTags)
-        .join(object: (imageToTag) => imageToTag.tag);
 
-    var res = await query.fetchOne();
+    await Future.wait(futures).then((onValue) async {
+      query.where((g) => g.id).equalTo(insertedImage.id);
+      query.join(object: (image) => image.photographer);
+      query.join(object: (image) => image.user);
+      query
+          .join(set: (image) => image.imageTags)
+          .join(object: (imageToTag) => imageToTag.tag);
 
-    return Response.ok(res);
+      var res = await query.fetchOne();
+
+      return Response.ok(res);
+    });
   }
 
   @Operation.get()
