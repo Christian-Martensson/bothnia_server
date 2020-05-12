@@ -17,10 +17,10 @@ Future main() async {
   });
 
   test("POST /tag duplicate returns existing tag ", () async {
-    var res = await harness.agent.post("/tag", body: {
+    var res1 = await harness.agent.post("/tag", body: {
       "name": "fotboll",
     });
-    res = await harness.agent.post("/tag", body: {
+    var res = await harness.agent.post("/tag", body: {
       "name": "fotboll",
     });
 
