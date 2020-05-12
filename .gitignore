@@ -16,3 +16,4 @@ config.yaml
 database.yaml
 .dart_tool/
 .tool-versions
+public
