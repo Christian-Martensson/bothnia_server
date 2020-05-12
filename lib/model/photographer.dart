@@ -7,9 +7,7 @@ class _Photographer {
   @primaryKey
   int id;
 
-  String fName;
-
-  String lName;
+  String name;
 
   @Column(nullable: true)
   String email;
