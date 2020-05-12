@@ -1,0 +1,10 @@
+[0;1;32m●[0m bothnia.service - Our Recipes Server
+   Loaded: loaded (/etc/systemd/system/bothnia.service; enabled; vendor preset: enabled)
+   Active: [0;1;32mactive (running)[0m since Tue 2020-05-12 07:41:49 UTC; 528ms ago
+ Main PID: 31725 (dart)
+    Tasks: 7 (limit: 1149)
+   Memory: 116.9M
+   CGroup: /system.slice/bothnia.service
+           └─31725 dart /home/bothnia/bothnia_server/bothnia_server.sh
+
+May 12 07:41:49 pumpaduo systemd[1]: Started Our Recipes Server.
