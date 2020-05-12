@@ -45,34 +45,16 @@ class ImageController extends ResourceController {
     var res = await query.fetchOne();
 
     return Response.ok(res);
-
-    // final res = await getImage(insertedImage.id);
-    return Response.ok(res);
-    return Response.ok(await getImage(insertedImage.id));
-
-    //var futures = <Future>[];
-
-    tags.forEach((tag) async {
-      Query<ImageToTag> imageTagQuery = Query<ImageToTag>(context);
-      Query<Tag> tagQuery = Query<Tag>(context);
-      tagQuery.values.name = tag as String;
-
-      final insertedTag = await tagQuery.insert();
-      return Response.ok(insertedTag);
-      imageTagQuery.values
-        ..tag.id = insertedTag.id
-        ..image.id = insertedImage.id;
-      await imageTagQuery.insert();
-      //  futures.add(imageTagQuery.insert());
-    });
-
-    //await Future.wait(futures);
-
-    return Response.ok(await getImage(insertedImage.id));
   }
 
   @Operation.get()
   Future<Response> getImages() async {
+    query.join(object: (image) => image.photographer);
+    query.join(object: (image) => image.user);
+    query
+        .join(set: (image) => image.imageTags)
+        .join(object: (imageToTag) => imageToTag.tag);
+
     return Response.ok(await query.fetch());
   }
 

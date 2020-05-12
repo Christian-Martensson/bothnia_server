@@ -13,17 +13,16 @@ Future main() async {
   final harness = Harness()..install();
 
   test("POST /image basic to actual server", () async {
-    final base64String =
-        base64Encode(await File("test/test_assets/test.jpg").readAsBytes());
     final res = await http.post(
       "http://94.237.89.244:7777/image",
       headers: headers,
       body: json.encode({
         "name": "My Picture",
         "description": "very pretty",
-        "base64": base64String,
+        "base64": await getTestImage(),
         "photographer": {"id": 1},
         "user": {"id": 1},
+        "tags": ["tag1", "tag2"]
       }),
     );
   });
