@@ -5,6 +5,7 @@ class Tag extends ManagedObject<_Tag> implements _Tag {}
 class _Tag {
   @primaryKey
   int id;
+
   @Column(unique: true)
   String name;
 
