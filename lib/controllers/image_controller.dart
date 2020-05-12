@@ -24,22 +24,34 @@ class ImageController extends ResourceController {
     await File("public/${insertedImage.id}.jpg").writeAsBytes(base64);
 
     final body = await request.body.decode();
-    final List<dynamic> tags = body["tags"] as List<dynamic>;
+    final List<String> tags = body["tags"] as List<String>;
 
     var futures = <Future>[];
 
     if (tags != null) {
-      for (var tag in tags) {
+      for (String tag in tags) {
         Query<Tag> tagQuery = Query<Tag>(context);
         Query<ImageToTag> imageTagQuery = Query<ImageToTag>(context);
 
-        tagQuery.values.name = tag as String;
-        final insertedTag = await tagQuery.insert();
-        imageTagQuery.values
-          ..tag.id = insertedTag.id
-          ..image.id = insertedImage.id;
-        //await imageTagQuery.insert();
-        futures.add(imageTagQuery.insert());
+        Query<Tag> findQuery = Query<Tag>(context);
+        findQuery.where((t) => t.name).equalTo(tag);
+        var fetchedTag = await findQuery.fetchOne();
+
+        if (fetchedTag == null) {
+          tagQuery.values.name = tag;
+          final insertedTag = await tagQuery.insert();
+          imageTagQuery.values
+            ..tag.id = insertedTag.id
+            ..image.id = insertedImage.id;
+
+          futures.add(imageTagQuery.insert());
+        } else {
+          imageTagQuery.values
+            ..tag.id = fetchedTag.id
+            ..image.id = insertedImage.id;
+
+          futures.add(imageTagQuery.insert());
+        }
       }
     }
 
