@@ -1,5 +1,7 @@
 import 'dart:convert';
 
+import 'package:bothnia_server/utility/helper.dart';
+
 import '../bothnia_server.dart';
 
 class ImageController extends ResourceController {
@@ -66,7 +68,7 @@ class ImageController extends ResourceController {
 
     var res = await query.fetchOne();
 
-    return Response.ok(res);
+    return Response.ok(cleanTags(res));
   }
 
   @Operation.get()
@@ -77,7 +79,11 @@ class ImageController extends ResourceController {
         .join(set: (image) => image.imageTags)
         .join(object: (imageToTag) => imageToTag.tag);
 
-    return Response.ok(await query.fetch());
+    List<Image> res = await query.fetch();
+
+    var cleaned = res.map((f) => cleanTags(f)).toList();
+
+    return Response.ok(cleaned);
   }
 
   @Operation.get('id')
@@ -89,9 +95,9 @@ class ImageController extends ResourceController {
         .join(set: (image) => image.imageTags)
         .join(object: (imageToTag) => imageToTag.tag);
 
-    var res = await query.fetchOne();
+    Image res = await query.fetchOne();
 
-    return Response.ok(res);
+    return Response.ok(cleanTags(res));
   }
 
   @Operation.put('id')
@@ -109,7 +115,7 @@ class ImageController extends ResourceController {
       await File("public/${id}.jpg").writeAsBytes(decoded);
     }
 
-    return Response.ok(updatedImage);
+    return Response.ok(cleanTags(updatedImage));
   }
 
   @Operation.delete('id')

@@ -154,12 +154,16 @@ Future main() async {
     final body = await res.body.decode();
     final imageId = body["id"];
 
-    res = await harness.agent.get(
+    final res2 = await harness.agent.get(
       "/image/$imageId",
     );
 
+    final res3 = await harness.agent.get(
+      "/image",
+    );
+
     expect(
-        res,
+        res2,
         hasResponse(200, body: {
           "id": isInteger,
           "name": "My Picture",
