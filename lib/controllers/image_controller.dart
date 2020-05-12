@@ -22,19 +22,19 @@ class ImageController extends ResourceController {
 
     final body = await request.body.decode();
     final List<dynamic> tags = r["tags"] as List<dynamic>;
+    if (tags != null) {
+      for (var tag in tags) {
+        Query<Tag> tagQuery = Query<Tag>(context);
+        Query<ImageToTag> imageTagQuery = Query<ImageToTag>(context);
 
-    for (var tag in tags) {
-      Query<Tag> tagQuery = Query<Tag>(context);
-      Query<ImageToTag> imageTagQuery = Query<ImageToTag>(context);
-
-      tagQuery.values.name = tag as String;
-      final insertedTag = await tagQuery.insert();
-      imageTagQuery.values
-        ..tag.id = insertedTag.id
-        ..image.id = insertedImage.id;
-      await imageTagQuery.insert();
+        tagQuery.values.name = tag as String;
+        final insertedTag = await tagQuery.insert();
+        imageTagQuery.values
+          ..tag.id = insertedTag.id
+          ..image.id = insertedImage.id;
+        await imageTagQuery.insert();
+      }
     }
-
     query.where((g) => g.id).equalTo(insertedImage.id);
     query.join(object: (image) => image.photographer);
     query.join(object: (image) => image.user);
