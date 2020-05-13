@@ -21,9 +21,9 @@ class ImageSearchController extends ResourceController {
 
     // return Response.ok(await query.fetch());
     // TAGS
-    // are seperated by "&", e.g. "tag1&tag2&tag3"
+    // are seperated by "&", e.g. "tag1+tag2+tag3"
     if (tagString != null) {
-      tags = tagString.split("#");
+      tags = tagString.split("+");
       imageTagQuery.where((it) => it.tag.name).oneOf(tags);
 
       final imageToTags = await imageTagQuery.fetch();

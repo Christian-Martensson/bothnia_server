@@ -79,7 +79,7 @@ Future main() async {
       query: {
         // "imageName": "fourth",
         // "photographerId": 2,
-        "tags": "skog&natur",
+        "tags": "skog+natur",
         // "startDate": DateTime(now.year, now.month, now.day).toIso8601String(),
         // "endDate": DateTime(now.year, now.month, now.day + 1).toIso8601String(),
       },
