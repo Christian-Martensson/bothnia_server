@@ -84,15 +84,8 @@ class ImageSearchController extends ResourceController {
     }
     List<Map<String, dynamic>> cleanedList = images.map(cleanTags).toList();
 
-    // cleanedList[0]["tags"];
-
-    // var randomList = [];
-    // randomList.where((each) => each["hey"]);
-
-    // if the image does not have all the [queryTags], reject it.
-
     if (queryTags != null) {
-      var newList = cleanedList.where((each) {
+      final imagesWithAllTagsFromQuery = cleanedList.where((each) {
         final imageTags = each["tags"] as List;
         bool matchesAllTags = true;
         for (var queryTag in queryTags) {
@@ -100,15 +93,12 @@ class ImageSearchController extends ResourceController {
             matchesAllTags = false;
           }
         }
-        // bool isTrue = test.contains(tags);
         return matchesAllTags;
       }).toList();
 
-      return Response.ok(newList);
+      return Response.ok(imagesWithAllTagsFromQuery);
     } else {
       return Response.ok(cleanedList);
     }
-
-    return Response.ok(await fetchCleanedImageWithEverything(query));
   }
 }
