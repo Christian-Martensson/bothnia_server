@@ -13,24 +13,24 @@ class ImageSearchController extends ResourceController {
   Future<Response> findTag({
     @Bind.query('imageName') String imageName,
     @Bind.query('photographerId') int photographerId,
-    // @Bind.query('tags') String tagString,
-    // @Bind.query('startDate') String startDate,
-    // @Bind.query('endDate') String endDate,
+    @Bind.query('tags') String tagString,
+    @Bind.query('startDate') String startDate,
+    @Bind.query('endDate') String endDate,
   }) async {
     List<String> tags;
 
     // return Response.ok(await query.fetch());
     // TAGS
     // are seperated by "&", e.g. "tag1&tag2&tag3"
-    // if (tagString != null) {
-    //   tags = tagString.split("#");
-    //   imageTagQuery.where((it) => it.tag.name).oneOf(tags);
+    if (tagString != null) {
+      tags = tagString.split("#");
+      imageTagQuery.where((it) => it.tag.name).oneOf(tags);
 
-    //   final imageToTags = await imageTagQuery.fetch();
-    //   final imageIds = imageToTags.map((i) => i.image.id).toSet().toList();
+      final imageToTags = await imageTagQuery.fetch();
+      final imageIds = imageToTags.map((i) => i.image.id).toSet().toList();
 
-    //   query.where((i) => i.id).oneOf(imageIds);
-    // }
+      query.where((i) => i.id).oneOf(imageIds);
+    }
 
     // PHOTOGRAPHER
     if (photographerId != null) {
@@ -45,30 +45,30 @@ class ImageSearchController extends ResourceController {
 
     // DATES
     // only startDate is given
-    // if (startDate != null && endDate == null) {
-    //   DateTime d = DateTime.parse(startDate);
+    if (startDate != null && endDate == null) {
+      DateTime d = DateTime.parse(startDate);
 
-    //   query
-    //       .where((i) => i.created)
-    //       .greaterThanEqualTo(DateTime(d.year, d.month, d.day));
-    // }
-    // // only endDate is given
-    // if (startDate == null && endDate != null) {
-    //   DateTime d = DateTime.parse(endDate);
-    //   query
-    //       .where((i) => i.created)
-    //       .lessThanEqualTo(DateTime(d.year, d.month, d.day));
-    // }
-    // // date interval is given
-    // if (startDate != null && endDate != null) {
-    //   DateTime start = DateTime.parse(startDate);
-    //   DateTime end = DateTime.parse(endDate);
+      query
+          .where((i) => i.created)
+          .greaterThanEqualTo(DateTime(d.year, d.month, d.day));
+    }
+    // only endDate is given
+    if (startDate == null && endDate != null) {
+      DateTime d = DateTime.parse(endDate);
+      query
+          .where((i) => i.created)
+          .lessThanEqualTo(DateTime(d.year, d.month, d.day));
+    }
+    // date interval is given
+    if (startDate != null && endDate != null) {
+      DateTime start = DateTime.parse(startDate);
+      DateTime end = DateTime.parse(endDate);
 
-    //   query.where((i) => i.created).between(
-    //         DateTime(start.year, start.month, start.day),
-    //         DateTime(end.year, end.month, end.day),
-    //       );
-    // }
+      query.where((i) => i.created).between(
+            DateTime(start.year, start.month, start.day),
+            DateTime(end.year, end.month, end.day),
+          );
+    }
 
     query.sortBy((i) => i.created, QuerySortOrder.descending);
 
@@ -89,19 +89,23 @@ class ImageSearchController extends ResourceController {
     // var randomList = [];
     // randomList.where((each) => each["hey"]);
 
-    var newList = cleanedList.where((each) {
-      final test = each["tags"] as List;
-      bool matchesAllTags = true;
-      for (var tag in tags) {
-        if (!test.contains(tag)) {
-          matchesAllTags = false;
+    if (tags != null) {
+      var newList = cleanedList.where((each) {
+        final test = each["tags"] as List;
+        bool matchesAllTags = true;
+        for (var tag in tags) {
+          if (!test.contains(tag)) {
+            matchesAllTags = false;
+          }
         }
-      }
-      // bool isTrue = test.contains(tags);
-      return matchesAllTags;
-    }).toList();
+        // bool isTrue = test.contains(tags);
+        return matchesAllTags;
+      }).toList();
 
-    return Response.ok(newList);
+      return Response.ok(newList);
+    } else {
+      return Response.ok(cleanedList);
+    }
 
     return Response.ok(await fetchCleanedImageWithEverything(query));
   }
