@@ -98,6 +98,12 @@
       "languageVersion": "2.3"
     },
     {
+      "name": "http_server",
+      "rootUri": "file:///Users/chris/.pub-cache/hosted/pub.dartlang.org/http_server-0.9.8+3",
+      "packageUri": "lib/",
+      "languageVersion": "2.0"
+    },
+    {
       "name": "io",
       "rootUri": "file:///Users/chris/.pub-cache/hosted/pub.dartlang.org/io-0.3.4",
       "packageUri": "lib/",
@@ -362,7 +368,7 @@
       "languageVersion": "2.7"
     }
   ],
-  "generated": "2020-05-12T13:46:52.122561Z",
+  "generated": "2020-05-13T18:11:21.372393Z",
   "generator": "pub",
   "generatorVersion": "2.7.2"
 }

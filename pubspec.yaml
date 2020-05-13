@@ -10,6 +10,7 @@ environment:
 dependencies:
   aqueduct: ^3.3.0+1
   mime: ^0.9.6+3
+  http_server: ^0.9.8+3
 
 
 

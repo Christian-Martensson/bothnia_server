@@ -5,11 +5,10 @@ import 'package:bothnia_server/service/basic_credential_verifier.dart';
 import 'bothnia_server.dart';
 import 'controllers/doc_controller.dart';
 import 'controllers/image_controller.dart';
-import 'controllers/image_tag_controller.dart';
-
-import 'controllers/tag_find_controller.dart';
 import 'controllers/image_search_controller.dart';
-
+import 'controllers/image_tag_controller.dart';
+import 'controllers/media_upload_controller.dart';
+import 'controllers/tag_find_controller.dart';
 import 'controllers/user_controller.dart';
 
 /// This type initializes an application.
@@ -34,6 +33,8 @@ class BothniaChannel extends ApplicationChannel {
   @override
   Controller get entryPoint {
     final router = Router();
+
+    router.route("/upload").link(() => MediaUploadController());
 
     router.route("/image/[:id]").link(() => ImageController(context));
 
