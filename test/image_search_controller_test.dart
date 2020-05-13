@@ -71,15 +71,17 @@ Future main() async {
       },
     );
     var now = DateTime.now();
+    String test = now.toIso8601String();
+    print(test);
 
     res = await harness.agent.get(
       "/image/search",
       query: {
-        "imageName": "fourth",
-        "photographerId": 2,
+        // "imageName": "fourth",
+        // "photographerId": 2,
         "tags": "skog&natur",
-        "startDate": DateTime(now.year, now.month, now.day).toIso8601String(),
-        "endDate": DateTime(now.year, now.month, now.day + 1).toIso8601String(),
+        // "startDate": DateTime(now.year, now.month, now.day).toIso8601String(),
+        // "endDate": DateTime(now.year, now.month, now.day + 1).toIso8601String(),
       },
     );
 
