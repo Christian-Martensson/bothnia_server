@@ -3,115 +3,75 @@ import 'package:bothnia_server/utility/helper.dart';
 
 class ImageSearchController extends ResourceController {
   ImageSearchController(ManagedContext context) {
-    imageQuery = Query<Image>(context);
-    tagQuery = Query<Tag>(context);
+    query = Query<Image>(context);
     imageTagQuery = Query<ImageToTag>(context);
   }
-  Query<Image> imageQuery;
-  Query<Tag> tagQuery;
+  Query<Image> query;
   Query<ImageToTag> imageTagQuery;
 
   @Operation.get()
   Future<Response> findTag({
+    @Bind.query('imageName') String imageName,
     @Bind.query('photographerId') int photographerId,
-    // @Bind.query('queryString') String queryString,
-    // @Bind.query('photographerId') int photographerId,
-    // @Bind.query('tags') dynamic tags,
-    // @Bind.query('startDate') String startDate,
-    // @Bind.query('startDate') String endDate,
+    @Bind.query('tags') String tagString,
+    @Bind.query('startDate') String startDate,
+    @Bind.query('endDate') String endDate,
   }) async {
-    imageQuery.where((i) => i.photographer.id).equalTo(photographerId);
+    // return Response.ok(await query.fetch());
+    // TAGS
+    // are seperated by "&", e.g. "tag1&tag2&tag3"
+    if (tagString != null) {
+      List<String> tags = tagString.split("&");
+      imageTagQuery.where((it) => it.tag.name).oneOf(tags);
 
-    return Response.ok(await imageQuery.fetch());
+      final imageToTags = await imageTagQuery.fetch();
+      final imageIds = imageToTags.map((i) => i.image.id).toSet().toList();
 
-    // tagQuery..where((t) => t.name).oneOf(tags);
+      query.where((i) => i.id).oneOf(imageIds);
+    }
 
-    // tags.forEach((each) => tagQuery.where((tag) => tag.name).equalTo(each));
+    // PHOTOGRAPHER
+    if (photographerId != null) {
+      query.where((i) => i.photographer.id).equalTo(photographerId);
+    }
 
-    // return Response.ok(await tagQuery.fetch());
+    // IMAGENAME
+    if (imageName != null) {
+      query.where((i) => i.name).contains(imageName, caseSensitive: false);
+      // like("bob", caseSensitive: false);
 
-    // imageTagQuery.join(object: (it) => it.image);
-    // imageTagQuery.join(object: (it) => it.tag);
-    // // imageTagQuery.where((f) => f.tag.name).equalTo(tags[0]);
-    // // imageTagQuery.sortBy((f) => f.image.created, QuerySortOrder.descending);
-    // return Response.ok(await imageTagQuery.fetch());
+      // like(imageName);
+    }
 
-    // query
-    //     .join(set: (image) => image.imageTags)
-    //     .join(object: (imageToTag) => imageToTag.tag);
-    // query.where((f) => f.name);
-    // // .where((t) => tags.contains(t.name))
-    // // .equalTo(true);
-    // // query.join(object: (image) => image.photographer);
-    // // query.join(object: (image) => image.user);
-    // // query
-    // //     .join(set: (image) => image.imageTags)
-    // //     .join(object: (imageToTag) => imageToTag.tag);
-    // // return Response.ok(await query.fetch());
-    // // return Response.ok({"body": "body"});
-    // if (queryString != null && queryString.isNotEmpty) {
-    //   query.where((i) => i.name).contains(queryString);
-    // }
-    // if (photographerId != null && photographerId != 0) {
-    //   query.where((i) => i.photographer.id).equalTo(photographerId);
-    // }
-    // if (tags != null) {
-    //   // imageTagQuery.where((f) => f.tag.name).oneOf(tags);
+    // DATES
+    // only startDate is given
+    if (startDate != null && endDate == null) {
+      DateTime d = DateTime.parse(startDate);
 
-    //   // imageTagQuery.where((i) => i.tag.name).oneOf(tags);
-    //   var imageTags = await imageTagQuery.fetch();
-    //   return Response.ok(imageTags);
+      query
+          .where((i) => i.created)
+          .greaterThanEqualTo(DateTime(d.year, d.month, d.day));
+    }
+    // only endDate is given
+    if (startDate == null && endDate != null) {
+      DateTime d = DateTime.parse(endDate);
+      query
+          .where((i) => i.created)
+          .lessThanEqualTo(DateTime(d.year, d.month, d.day));
+    }
+    // date interval is given
+    if (startDate != null && endDate != null) {
+      DateTime start = DateTime.parse(startDate);
+      DateTime end = DateTime.parse(endDate);
 
-    //   //query.where((f) => f.imageTags).equalTo(imageTags)
+      query.where((i) => i.created).between(
+            DateTime(start.year, start.month, start.day),
+            DateTime(end.year, end.month, end.day),
+          );
+    }
 
-    //   query
-    //       .join(set: (image) => image.imageTags)
-    //       .join(object: (imageToTag) => imageToTag.tag)
-    //       .where((t) => tags.contains(t.name))
-    //       .equalTo(true);
-    //   //  .contains(tags[0]);
+    query.sortBy((i) => i.created, QuerySortOrder.descending);
 
-    //   //query.where((i) => i.imageTags);
-    //   // .contains(tags[0]);
-    //   // .where((t) => tags.contains(t.name));
-    // }
-
-    // if (startDate != null && endDate == null) {
-    //   DateTime d = DateTime.parse(startDate);
-
-    //   DateTime startOfDay = DateTime(d.year, d.month, d.day);
-    //   DateTime endOfDay = DateTime(d.year, d.month, d.day + 1);
-
-    //   query.where((i) => i.captured).between(
-    //         DateTime(d.year, d.month, d.day),
-    //         DateTime(d.year, d.month, d.day + 1),
-    //       );
-    // }
-
-    // if (startDate == null && endDate != null) {
-    //   DateTime d = DateTime.parse(endDate);
-
-    //   DateTime startOfDay = DateTime(d.year, d.month, d.day);
-    //   DateTime endOfDay = DateTime(d.year, d.month, d.day + 1);
-
-    //   query.where((i) => i.captured).between(
-    //         DateTime(d.year, d.month, d.day),
-    //         DateTime(d.year, d.month, d.day + 1),
-    //       );
-    // }
-
-    // if (startDate != null && endDate != null) {
-    //   DateTime start = DateTime.parse(startDate);
-    //   DateTime end = DateTime.parse(endDate);
-    //   query.where((i) => i.captured).between(start, end);
-    // }
-
-    // final images = await imageQuery.fetch();
-    // if (images == null) {
-    //   return Response.notFound();
-    // }
-
-    // final cleaned = images.map(cleanTags).toList();
-    // return Response.ok(cleaned);
+    return Response.ok(await fetchCleanedImageWithEverything(query));
   }
 }

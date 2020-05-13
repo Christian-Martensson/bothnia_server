@@ -26,9 +26,12 @@ Future<dynamic> fetchCleanedImageWithEverything(Query<Image> query,
   var res;
   if (fetchOne) {
     final image = await query.fetchOne();
+    if (image == null) return Response.notFound();
+
     res = cleanTags(image);
   } else {
     final images = await query.fetch();
+    if (images == null) return Response.notFound();
     res = images.map(cleanTags).toList();
   }
 

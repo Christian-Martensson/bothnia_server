@@ -47,18 +47,39 @@ Future main() async {
         "name": "My Third Picture",
         "base64": await getTestImage(),
         "photographer": {"id": 2},
+        "tags": ["kungafamiljen"],
+      },
+    );
+
+    res = await harness.agent.post(
+      "/image",
+      body: {
+        "name": "My Fourth Picture",
+        "base64": await getTestImage(),
+        "photographer": {"id": 2},
         "tags": ["skog"],
       },
     );
 
+    res = await harness.agent.post(
+      "/image",
+      body: {
+        "name": "fourth",
+        "base64": await getTestImage(),
+        // "photographer": {"id": 2},
+        // "tags": ["skog"],
+      },
+    );
+    var now = DateTime.now();
+
     res = await harness.agent.get(
       "/image/search",
       query: {
-        //"queryString": null,
-        "photographerId": 1,
-        // "tags": ["skog"],
-        // "startDate": null,
-        // "endDate": null,
+        "imageName": "fourth",
+        "photographerId": 2,
+        "tags": "skog&natur",
+        "startDate": DateTime(now.year, now.month, now.day).toIso8601String(),
+        "endDate": DateTime(now.year, now.month, now.day + 1).toIso8601String(),
       },
     );
 
