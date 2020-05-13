@@ -27,7 +27,7 @@ Future main() async {
         "name": "My First Picture",
         "base64": await getTestImage(),
         "photographer": {"id": 1},
-        "tags": ["natur"],
+        "tags": ["skog"],
       },
     );
 
@@ -47,29 +47,29 @@ Future main() async {
         "name": "My Third Picture",
         "base64": await getTestImage(),
         "photographer": {"id": 2},
-        "tags": ["kungafamiljen", "skog", "natur"],
+        "tags": ["natur", "bear", "skog", "ljust"],
       },
     );
 
-    res = await harness.agent.post(
-      "/image",
-      body: {
-        "name": "My Fourth Picture",
-        "base64": await getTestImage(),
-        "photographer": {"id": 2},
-        "tags": ["skog"],
-      },
-    );
+    // res = await harness.agent.post(
+    //   "/image",
+    //   body: {
+    //     "name": "My Fourth Picture",
+    //     "base64": await getTestImage(),
+    //     "photographer": {"id": 2},
+    //     "tags": ["bear"],
+    //   },
+    // );
 
-    res = await harness.agent.post(
-      "/image",
-      body: {
-        "name": "fourth",
-        "base64": await getTestImage(),
-        // "photographer": {"id": 2},
-        // "tags": ["skog"],
-      },
-    );
+    // res = await harness.agent.post(
+    //   "/image",
+    //   body: {
+    //     "name": "fourth",
+    //     "base64": await getTestImage(),
+    //     // "photographer": {"id": 2},
+    //     // "tags": ["skog"],
+    //   },
+    // );
     var now = DateTime.now();
     String test = now.toIso8601String();
     print(test);
@@ -79,7 +79,7 @@ Future main() async {
       query: {
         // "imageName": "fourth",
         // "photographerId": 2,
-        "tags": "skog+natur",
+        "tags": "skog;natur",
         // "startDate": DateTime(now.year, now.month, now.day).toIso8601String(),
         // "endDate": DateTime(now.year, now.month, now.day + 1).toIso8601String(),
       },
