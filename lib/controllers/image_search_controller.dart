@@ -17,14 +17,14 @@ class ImageSearchController extends ResourceController {
     @Bind.query('startDate') String startDate,
     @Bind.query('endDate') String endDate,
   }) async {
-    List<String> tags;
+    List<String> queryTags;
 
     // return Response.ok(await query.fetch());
     // TAGS
     // are seperated by "&", e.g. "tag1+tag2+tag3"
     if (tagString != null) {
-      tags = tagString.split("+");
-      imageTagQuery.where((it) => it.tag.name).oneOf(tags);
+      queryTags = tagString.split("+");
+      imageTagQuery.where((it) => it.tag.name).oneOf(queryTags);
 
       final imageToTags = await imageTagQuery.fetch();
       final imageIds = imageToTags.map((i) => i.image.id).toSet().toList();
@@ -89,12 +89,14 @@ class ImageSearchController extends ResourceController {
     // var randomList = [];
     // randomList.where((each) => each["hey"]);
 
-    if (tags != null) {
+    // if the image does not have all the [queryTags], reject it.
+
+    if (queryTags != null) {
       var newList = cleanedList.where((each) {
-        final test = each["tags"] as List;
+        final imageTags = each["tags"] as List;
         bool matchesAllTags = true;
-        for (var tag in tags) {
-          if (!test.contains(tag)) {
+        for (var queryTag in queryTags) {
+          if (!imageTags.contains(queryTag)) {
             matchesAllTags = false;
           }
         }
