@@ -34,7 +34,7 @@ class BothniaChannel extends ApplicationChannel {
   Controller get entryPoint {
     final router = Router();
 
-    router.route("/upload").link(() => MediaUploadController());
+    // router.route("/upload").link(() => MediaUploadController());
 
     router.route("/image/[:id]").link(() => ImageController(context));
 
