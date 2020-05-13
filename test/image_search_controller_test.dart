@@ -8,7 +8,7 @@ import 'utilities.dart';
 Future main() async {
   final harness = Harness()..install();
 
-  test("GET /image with everything", () async {
+  test("GET /image/find with everything", () async {
     //POST /photographer
     var res;
     res = await harness.agent.post("/photographer", body: {
@@ -27,7 +27,7 @@ Future main() async {
         "name": "My First Picture",
         "base64": await getTestImage(),
         "photographer": {"id": 1},
-        "tags": ["älg"],
+        "tags": ["natur"],
       },
     );
 
@@ -37,9 +37,7 @@ Future main() async {
         "name": "My Second Picture",
         "base64": await getTestImage(),
         "photographer": {"id": 2},
-        "tags": [
-          "björn",
-        ],
+        "tags": ["skog", "natur"]
       },
     );
 
@@ -49,21 +47,43 @@ Future main() async {
         "name": "My Third Picture",
         "base64": await getTestImage(),
         "photographer": {"id": 2},
-        "tags": [
-          "älg",
-        ],
+        "tags": ["skog"],
       },
     );
 
     res = await harness.agent.get(
-      "/image/find",
+      "/image/search",
       query: {
         //"queryString": null,
-        //  "photographerId": 1,
-        "tags": ["björn"],
+        "photographerId": 1,
+        // "tags": ["skog"],
         // "startDate": null,
         // "endDate": null,
       },
+    );
+
+    expect(res, hasResponse(200));
+  });
+
+  test("GET /image/find only tags", () async {
+    var res;
+    res = await harness.agent.post(
+      "/tag",
+      body: {"name": "tag1"},
+    );
+    res = await harness.agent.post(
+      "/tag",
+      body: {"name": "tag2"},
+    );
+    res = await harness.agent.post(
+      "/tag",
+      body: {"name": "tag3"},
+    );
+
+    var allTags = await harness.agent.get("/tag");
+
+    res = await harness.agent.get(
+      "/image/search",
     );
 
     expect(res, hasResponse(200));

@@ -13,20 +13,24 @@ Future main() async {
   final harness = Harness()..install();
 
   test("POST /image basic to actual server", () async {
-    final res = await http.post(
-      "http://94.237.89.244:7777/image",
-      headers: headers,
-      body: json.encode({
-        "name": "My Picture",
-        // "description": "very pretty",
-        "base64": await getTestImage(),
-        // "photographer": {"id": 1},
-        // "user": {"id": 1},
-        // "tags": ["testTag1", "testTag2"]
-      }),
-    );
+    int counter = 1;
 
-    print(res.body);
+    while (counter < 6) {
+      final res = await http.post(
+        "http://94.237.89.244:7777/image",
+        headers: headers,
+        body: json.encode({
+          "name": "Picture $counter",
+          "description": "Description $counter",
+          "base64": await getTestImage(),
+          "photographer": {"id": 1},
+          // "user": {"id": 1},
+          "tags": ["björn", "skog", "skymning"]
+        }),
+      );
+
+      counter++;
+    }
   });
 
   test("POST /image with minimum data", () async {
@@ -70,7 +74,7 @@ Future main() async {
     final base64String =
         base64Encode(await File("test/test_assets/test.jpg").readAsBytes());
     final res = await harness.agent.post(
-      "http://94.237.89.244:7777/image",
+      "/image",
       body: {
         "name": "My Picture",
         "description": "the best picture",
@@ -82,15 +86,9 @@ Future main() async {
         "yCoordinates": "-74.044505",
         "license": "Köpt från GreatMedia AB för begränsad användning: 5 gånger",
         "usesLeft": 5,
-        "photographer": {"id": 1},
-        "user": {"id": 1},
-        "imageTags": [
-          {
-            "id": 1,
-            "image": {"id": 1},
-            "tag": {"id": 1, "name": "björn"}
-          }
-        ]
+        // "photographer": {"id": 1},
+        //  "user": {"id": 1},
+        "tags": ["björn"]
       },
     );
 
