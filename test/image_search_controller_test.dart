@@ -47,7 +47,7 @@ Future main() async {
         "name": "My Third Picture",
         "base64": await getTestImage(),
         "photographer": {"id": 2},
-        "tags": ["kungafamiljen"],
+        "tags": ["kungafamiljen", "skog", "natur"],
       },
     );
 

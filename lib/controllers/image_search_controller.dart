@@ -17,11 +17,13 @@ class ImageSearchController extends ResourceController {
     @Bind.query('startDate') String startDate,
     @Bind.query('endDate') String endDate,
   }) async {
+    List<String> tags;
+
     // return Response.ok(await query.fetch());
     // TAGS
     // are seperated by "&", e.g. "tag1&tag2&tag3"
     if (tagString != null) {
-      List<String> tags = tagString.split("&");
+      tags = tagString.split("&");
       imageTagQuery.where((it) => it.tag.name).oneOf(tags);
 
       final imageToTags = await imageTagQuery.fetch();
@@ -38,8 +40,6 @@ class ImageSearchController extends ResourceController {
     // IMAGENAME
     if (imageName != null) {
       query.where((i) => i.name).contains(imageName, caseSensitive: false);
-      // like("bob", caseSensitive: false);
-
       // like(imageName);
     }
 
@@ -71,6 +71,37 @@ class ImageSearchController extends ResourceController {
     }
 
     query.sortBy((i) => i.created, QuerySortOrder.descending);
+
+    query.join(object: (image) => image.photographer);
+    query.join(object: (image) => image.user);
+    query
+        .join(set: (image) => image.imageTags)
+        .join(object: (imageToTag) => imageToTag.tag);
+
+    List<Image> images = await query.fetch();
+    if (images == null) {
+      return Response.notFound();
+    }
+    List<Map<String, dynamic>> cleanedList = images.map(cleanTags).toList();
+
+    // cleanedList[0]["tags"];
+
+    // var randomList = [];
+    // randomList.where((each) => each["hey"]);
+
+    var newList = cleanedList.where((each) {
+      final test = each["tags"] as List;
+      bool matchesAllTags = true;
+      for (var tag in tags) {
+        if (!test.contains(tag)) {
+          matchesAllTags = false;
+        }
+      }
+      // bool isTrue = test.contains(tags);
+      return matchesAllTags;
+    }).toList();
+
+    return Response.ok(newList);
 
     return Response.ok(await fetchCleanedImageWithEverything(query));
   }
