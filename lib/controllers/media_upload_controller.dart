@@ -24,6 +24,7 @@ class MediaUploadController extends ResourceController {
 
       final content = multipart.cast<List<int>>();
 
+      //TODO: remove file if already exists
       final filePath = "public/$id.jpg";
 
       IOSink sink = File(filePath).openWrite();
