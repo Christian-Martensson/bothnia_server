@@ -6,7 +6,6 @@ class DocController extends ResourceController {
 
   @Operation.get()
   Future<Response> getDoc() async {
-    request.toString();
     final file = File("web/client.html");
 
     return Response.ok(file.readAsStringSync())
