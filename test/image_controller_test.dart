@@ -18,11 +18,11 @@ Future main() async {
       headers: headers,
       body: json.encode({
         "name": "My Picture",
-        "description": "very pretty",
+        // "description": "very pretty",
         "base64": await getTestImage(),
-        "photographer": {"id": 1},
-        "user": {"id": 1},
-        "tags": ["testTag1", "testTag2"]
+        // "photographer": {"id": 1},
+        // "user": {"id": 1},
+        // "tags": ["testTag1", "testTag2"]
       }),
     );
 
@@ -150,6 +150,8 @@ Future main() async {
         "tags": ["björn", "älg", "kungafamiljen"],
       },
     );
+
+    res = await harness.agent.get("/image");
 
     final body = await res.body.decode();
     final imageId = body["id"];

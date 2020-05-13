@@ -60,44 +60,30 @@ class ImageController extends ResourceController {
     await Future.wait(futures);
 
     query.where((g) => g.id).equalTo(insertedImage.id);
-    query.join(object: (image) => image.photographer);
-    query.join(object: (image) => image.user);
-    query
-        .join(set: (image) => image.imageTags)
-        .join(object: (imageToTag) => imageToTag.tag);
+    return Response.ok(
+        await fetchCleanedImageWithEverything(query, fetchOne: true));
 
-    var res = await query.fetchOne();
+    // query.join(object: (image) => image.photographer);
+    // query.join(object: (image) => image.user);
+    // query
+    //     .join(set: (image) => image.imageTags)
+    //     .join(object: (imageToTag) => imageToTag.tag);
 
-    return Response.ok(cleanTags(res));
+    // var res = await query.fetchOne();
+
+    // return Response.ok(cleanTags(res));
   }
 
   @Operation.get()
   Future<Response> getImages() async {
-    query.join(object: (image) => image.photographer);
-    query.join(object: (image) => image.user);
-    query
-        .join(set: (image) => image.imageTags)
-        .join(object: (imageToTag) => imageToTag.tag);
-
-    List<Image> res = await query.fetch();
-
-    var cleaned = res.map((f) => cleanTags(f)).toList();
-
-    return Response.ok(cleaned);
+    return Response.ok(await fetchCleanedImageWithEverything(query));
   }
 
   @Operation.get('id')
   Future<Response> getImage(@Bind.path('id') int id) async {
     query.where((g) => g.id).equalTo(id);
-    query.join(object: (image) => image.photographer);
-    query.join(object: (image) => image.user);
-    query
-        .join(set: (image) => image.imageTags)
-        .join(object: (imageToTag) => imageToTag.tag);
-
-    Image res = await query.fetchOne();
-
-    return Response.ok(cleanTags(res));
+    return Response.ok(
+        await fetchCleanedImageWithEverything(query, fetchOne: true));
   }
 
   @Operation.put('id')
@@ -114,7 +100,7 @@ class ImageController extends ResourceController {
       await File("public/${id}.jpg").delete();
       await File("public/${id}.jpg").writeAsBytes(decoded);
     }
-
+    //TODO: Join all tables
     return Response.ok(cleanTags(updatedImage));
   }
 
