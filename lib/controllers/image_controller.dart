@@ -81,6 +81,8 @@ class ImageController extends ResourceController {
     query = Query<Image>(context);
     query.where((i) => i.id).equalTo(updatedImage.id);
 
+    //TODO: iterate through tags and add/remove if necessary.
+
     return Response.ok(
         await fetchCleanedImageWithEverything(query, fetchOne: true));
   }

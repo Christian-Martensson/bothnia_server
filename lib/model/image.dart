@@ -22,14 +22,9 @@ class _Image {
   @Column(nullable: true)
   String description;
 
-  //not needed as path is just the endpoint/$id
-  //String imagePath;
-
   DateTime created;
 
   DateTime modified;
-
-  // nullable in case EXIF is missing
 
   @Column(nullable: true)
   DateTime firstPubDate;
@@ -63,11 +58,6 @@ class _Image {
 
   @Column(defaultValue: "false")
   bool isPublicallyAdded;
-  // multipart request used to upload image instead
-  // @Column(nullable: true)
-  // String base64;
-
-  //ManagedSet<Image> versions;
 
   ManagedSet<ImageToTag> imageTags;
 
