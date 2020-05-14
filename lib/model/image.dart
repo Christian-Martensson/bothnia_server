@@ -30,17 +30,27 @@ class _Image {
   DateTime modified;
 
   // nullable in case EXIF is missing
-  @Column(nullable: true)
-  DateTime captured;
 
   @Column(nullable: true)
   DateTime firstPubDate;
 
   @Column(nullable: true)
-  String xCoordinates;
+  String gpsLatitude;
 
   @Column(nullable: true)
-  String yCoordinates;
+  String gpsLongitude;
+
+  @Column(nullable: true)
+  String cameraModel;
+
+  @Column(nullable: true)
+  String imageWidth;
+
+  @Column(nullable: true)
+  String imageHeight;
+
+  @Column(nullable: true)
+  DateTime captured;
 
   @Column(nullable: true)
   String license;
@@ -53,9 +63,9 @@ class _Image {
 
   @Column(defaultValue: "false")
   bool isPublicallyAdded;
-
-  @Column(nullable: true)
-  String base64;
+  // multipart request used to upload image instead
+  // @Column(nullable: true)
+  // String base64;
 
   //ManagedSet<Image> versions;
 
