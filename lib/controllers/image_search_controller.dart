@@ -27,10 +27,10 @@ class ImageSearchController extends ResourceController {
       imageTagQuery.where((it) => it.tag.name).oneOf(queryTags);
 
       final imageToTags = await imageTagQuery.fetch();
-      if (imageToTags == null) {
-        return Response.notFound(
-            body: "No images found with that tag. Try a different tag.");
-      }
+      // if (imageToTags == null) {
+      //   return Response.notFound(
+      //       body: "No images found with that tag. Try a different tag.");
+      // }
       final imageIds = imageToTags.map((i) => i.image.id).toSet().toList();
 
       query.where((i) => i.id).oneOf(imageIds);
