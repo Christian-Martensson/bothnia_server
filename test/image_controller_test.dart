@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'harness/app.dart';
 import 'package:http/http.dart' as http;
+import 'package:http_parser/http_parser.dart';
 
 import 'utilities.dart';
 
@@ -11,6 +12,31 @@ Map<String, String> headers = {
 
 Future main() async {
   final harness = Harness()..install();
+
+  test("POST /image basic to actual server", () async {
+    final res = await http.post(
+      "http://94.237.89.244:7777/image",
+      headers: headers,
+      body: json.encode({
+        "name": "Lodjur med barn",
+        "tags": ["lodjur", "sko", "söt"],
+      }),
+    );
+
+    final map = json.decode(res.body);
+    final id = map["id"];
+
+    var uri = Uri.parse('http://94.237.89.244:7777/upload/$id');
+    var request = http.MultipartRequest('POST', uri)
+      // ..fields['user'] = 'nweiz@google.com'
+      ..files.add(await http.MultipartFile.fromPath(
+        'content',
+        'test/test_assets/lodjur.jpg',
+        contentType: MediaType('multipart', 'form-data'),
+      ));
+
+    var response = await request.send();
+  });
 
   test("POST /image basic to actual server", () async {
     int counter = 1;

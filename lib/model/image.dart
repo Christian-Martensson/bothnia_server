@@ -36,6 +36,9 @@ class _Image {
   String gpsLongitude;
 
   @Column(nullable: true)
+  String location;
+
+  @Column(nullable: true)
   String cameraModel;
 
   @Column(nullable: true)
