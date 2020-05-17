@@ -1,1 +1,1932 @@
-{"openapi":"3.0.0","info":{"title":"bothnia_server","description":"En webbserver för att hantera Bothniabladets bildsamlingar.","version":"0.0.1"},"servers":[{"url":"http://localhost:8888"}],"paths":{"/image":{"parameters":[],"post":{"tags":["Image"],"operationId":"addImage","parameters":[],"requestBody":{"required":true,"content":{"application/json":{"schema":{"$ref":"#/components/schemas/Image"}}}},"responses":{"200":{"description":"Successful response."}}},"get":{"tags":["Image"],"operationId":"getImages","parameters":[],"responses":{"200":{"description":"Successful response."}}}},"/image/{id}":{"parameters":[{"name":"id","in":"path","required":true,"schema":{"type":"string"}}],"get":{"tags":["Image"],"operationId":"getImage","parameters":[{"name":"id","in":"path","required":true,"schema":{"type":"integer"}}],"responses":{"200":{"description":"Successful response."}}},"put":{"tags":["Image"],"operationId":"updateImage","parameters":[{"name":"id","in":"path","required":true,"schema":{"type":"integer"}}],"requestBody":{"required":true,"content":{"application/json":{"schema":{"$ref":"#/components/schemas/Image"}}}},"responses":{"200":{"description":"Successful response."}}},"delete":{"tags":["Image"],"operationId":"deleteImage","parameters":[{"name":"id","in":"path","required":true,"schema":{"type":"integer"}}],"responses":{"200":{"description":"Successful response."}}}},"/photographer":{"parameters":[],"post":{"tags":["Photographer"],"operationId":"createPhotographer","parameters":[],"requestBody":{"required":true,"content":{"application/json":{"schema":{"$ref":"#/components/schemas/Photographer"}}}},"responses":{"200":{"description":"Returns created object.","content":{"application/json":{"schema":{"$ref":"#/components/schemas/Photographer"}}}},"400":{"description":"Invalid request.","content":{"application/json":{"schema":{"type":"object","properties":{"error":{"type":"string"}}}}}},"409":{"description":"Object already exists","content":{"application/json":{"schema":{"type":"object","properties":{"error":{"type":"string"}}}}}}}},"get":{"tags":["Photographer"],"operationId":"getPhotographers","parameters":[{"name":"count","in":"query","required":false,"allowEmptyValue":false,"schema":{"type":"integer"}},{"name":"offset","in":"query","required":false,"allowEmptyValue":false,"schema":{"type":"integer"}},{"name":"pageBy","in":"query","required":false,"allowEmptyValue":false,"schema":{"type":"string"}},{"name":"pageAfter","in":"query","required":false,"allowEmptyValue":false,"schema":{"type":"string"}},{"name":"pagePrior","in":"query","required":false,"allowEmptyValue":false,"schema":{"type":"string"}},{"name":"sortBy","in":"query","required":false,"allowEmptyValue":false,"schema":{"type":"array","items":{"type":"string"}}}],"responses":{"200":{"description":"Returns a list of objects.","content":{"application/json":{"schema":{"type":"array","items":{"$ref":"#/components/schemas/Photographer"}}}}},"400":{"description":"Invalid request.","content":{"application/json":{"schema":{"type":"object","properties":{"error":{"type":"string"}}}}}}}}},"/photographer/{id}":{"parameters":[{"name":"id","in":"path","required":true,"schema":{"type":"string"}}],"get":{"tags":["Photographer"],"operationId":"getPhotographer","parameters":[{"name":"id","in":"path","required":true,"schema":{"type":"string"}}],"responses":{"200":{"description":"Returns a single object.","content":{"application/json":{"schema":{"$ref":"#/components/schemas/Photographer"}}}},"404":{"description":"No object found."}}},"delete":{"tags":["Photographer"],"operationId":"deletePhotographer","parameters":[{"name":"id","in":"path","required":true,"schema":{"type":"string"}}],"responses":{"200":{"description":"Object successfully deleted."},"404":{"description":"No object found."}}},"put":{"tags":["Photographer"],"operationId":"updatePhotographer","parameters":[{"name":"id","in":"path","required":true,"schema":{"type":"string"}}],"requestBody":{"required":true,"content":{"application/json":{"schema":{"$ref":"#/components/schemas/Photographer"}}}},"responses":{"200":{"description":"Returns updated object.","content":{"application/json":{"schema":{"$ref":"#/components/schemas/Photographer"}}}},"404":{"description":"No object found."},"400":{"description":"Invalid request.","content":{"application/json":{"schema":{"type":"object","properties":{"error":{"type":"string"}}}}}},"409":{"description":"Object already exists","content":{"application/json":{"schema":{"type":"object","properties":{"error":{"type":"string"}}}}}}}}},"/tag":{"parameters":[],"post":{"tags":["Tag"],"operationId":"createTag","parameters":[],"requestBody":{"required":true,"content":{"application/json":{"schema":{"$ref":"#/components/schemas/Tag"}}}},"responses":{"200":{"description":"Returns created object.","content":{"application/json":{"schema":{"$ref":"#/components/schemas/Tag"}}}},"400":{"description":"Invalid request.","content":{"application/json":{"schema":{"type":"object","properties":{"error":{"type":"string"}}}}}},"409":{"description":"Object already exists","content":{"application/json":{"schema":{"type":"object","properties":{"error":{"type":"string"}}}}}}}},"get":{"tags":["Tag"],"operationId":"getTags","parameters":[{"name":"count","in":"query","required":false,"allowEmptyValue":false,"schema":{"type":"integer"}},{"name":"offset","in":"query","required":false,"allowEmptyValue":false,"schema":{"type":"integer"}},{"name":"pageBy","in":"query","required":false,"allowEmptyValue":false,"schema":{"type":"string"}},{"name":"pageAfter","in":"query","required":false,"allowEmptyValue":false,"schema":{"type":"string"}},{"name":"pagePrior","in":"query","required":false,"allowEmptyValue":false,"schema":{"type":"string"}},{"name":"sortBy","in":"query","required":false,"allowEmptyValue":false,"schema":{"type":"array","items":{"type":"string"}}}],"responses":{"200":{"description":"Returns a list of objects.","content":{"application/json":{"schema":{"type":"array","items":{"$ref":"#/components/schemas/Tag"}}}}},"400":{"description":"Invalid request.","content":{"application/json":{"schema":{"type":"object","properties":{"error":{"type":"string"}}}}}}}}},"/tag/{id}":{"parameters":[{"name":"id","in":"path","required":true,"schema":{"type":"string"}}],"get":{"tags":["Tag"],"operationId":"getTag","parameters":[{"name":"id","in":"path","required":true,"schema":{"type":"string"}}],"responses":{"200":{"description":"Returns a single object.","content":{"application/json":{"schema":{"$ref":"#/components/schemas/Tag"}}}},"404":{"description":"No object found."}}},"delete":{"tags":["Tag"],"operationId":"deleteTag","parameters":[{"name":"id","in":"path","required":true,"schema":{"type":"string"}}],"responses":{"200":{"description":"Object successfully deleted."},"404":{"description":"No object found."}}},"put":{"tags":["Tag"],"operationId":"updateTag","parameters":[{"name":"id","in":"path","required":true,"schema":{"type":"string"}}],"requestBody":{"required":true,"content":{"application/json":{"schema":{"$ref":"#/components/schemas/Tag"}}}},"responses":{"200":{"description":"Returns updated object.","content":{"application/json":{"schema":{"$ref":"#/components/schemas/Tag"}}}},"404":{"description":"No object found."},"400":{"description":"Invalid request.","content":{"application/json":{"schema":{"type":"object","properties":{"error":{"type":"string"}}}}}},"409":{"description":"Object already exists","content":{"application/json":{"schema":{"type":"object","properties":{"error":{"type":"string"}}}}}}}}},"/tag/find":{"parameters":[],"get":{"tags":["TagFind"],"operationId":"findTag","parameters":[{"name":"name","in":"query","required":true,"allowEmptyValue":false,"schema":{"type":"string"}}],"responses":{"200":{"description":"Successful response."}}}},"/image/find":{"parameters":[],"get":{"tags":["ImageFind"],"operationId":"findTag","parameters":[{"name":"name","in":"query","required":true,"allowEmptyValue":false,"schema":{"type":"string"}},{"name":"photographerId","in":"query","required":true,"allowEmptyValue":false,"schema":{"type":"integer"}},{"name":"tags","in":"query","required":true,"allowEmptyValue":false,"schema":{"type":"array","items":{"type":"string"}}},{"name":"startDate","in":"query","required":true,"allowEmptyValue":false,"schema":{"type":"string"}},{"name":"startDate","in":"query","required":true,"allowEmptyValue":false,"schema":{"type":"string"}}],"responses":{"200":{"description":"Successful response."}}}},"/imagetag":{"parameters":[],"post":{"tags":["ImageTag"],"operationId":"createImageToTag","parameters":[],"requestBody":{"required":true,"content":{"application/json":{"schema":{"$ref":"#/components/schemas/ImageToTag"}}}},"responses":{"200":{"description":"Returns created object.","content":{"application/json":{"schema":{"$ref":"#/components/schemas/ImageToTag"}}}},"400":{"description":"Invalid request.","content":{"application/json":{"schema":{"type":"object","properties":{"error":{"type":"string"}}}}}},"409":{"description":"Object already exists","content":{"application/json":{"schema":{"type":"object","properties":{"error":{"type":"string"}}}}}}}},"get":{"tags":["ImageTag"],"operationId":"getImageToTags","parameters":[{"name":"count","in":"query","required":false,"allowEmptyValue":false,"schema":{"type":"integer"}},{"name":"offset","in":"query","required":false,"allowEmptyValue":false,"schema":{"type":"integer"}},{"name":"pageBy","in":"query","required":false,"allowEmptyValue":false,"schema":{"type":"string"}},{"name":"pageAfter","in":"query","required":false,"allowEmptyValue":false,"schema":{"type":"string"}},{"name":"pagePrior","in":"query","required":false,"allowEmptyValue":false,"schema":{"type":"string"}},{"name":"sortBy","in":"query","required":false,"allowEmptyValue":false,"schema":{"type":"array","items":{"type":"string"}}}],"responses":{"200":{"description":"Returns a list of objects.","content":{"application/json":{"schema":{"type":"array","items":{"$ref":"#/components/schemas/ImageToTag"}}}}},"400":{"description":"Invalid request.","content":{"application/json":{"schema":{"type":"object","properties":{"error":{"type":"string"}}}}}}}}},"/imagetag/{id}":{"parameters":[{"name":"id","in":"path","required":true,"schema":{"type":"string"}}],"get":{"tags":["ImageTag"],"operationId":"getImageToTag","parameters":[{"name":"id","in":"path","required":true,"schema":{"type":"string"}}],"responses":{"200":{"description":"Returns a single object.","content":{"application/json":{"schema":{"$ref":"#/components/schemas/ImageToTag"}}}},"404":{"description":"No object found."}}},"delete":{"tags":["ImageTag"],"operationId":"deleteImageToTag","parameters":[{"name":"id","in":"path","required":true,"schema":{"type":"string"}}],"responses":{"200":{"description":"Object successfully deleted."},"404":{"description":"No object found."}}},"put":{"tags":["ImageTag"],"operationId":"updateImageToTag","parameters":[{"name":"id","in":"path","required":true,"schema":{"type":"string"}}],"requestBody":{"required":true,"content":{"application/json":{"schema":{"$ref":"#/components/schemas/ImageToTag"}}}},"responses":{"200":{"description":"Returns updated object.","content":{"application/json":{"schema":{"$ref":"#/components/schemas/ImageToTag"}}}},"404":{"description":"No object found."},"400":{"description":"Invalid request.","content":{"application/json":{"schema":{"type":"object","properties":{"error":{"type":"string"}}}}}},"409":{"description":"Object already exists","content":{"application/json":{"schema":{"type":"object","properties":{"error":{"type":"string"}}}}}}}}},"/example":{"parameters":[]},"/auth/token":{"parameters":[],"post":{"tags":["Auth"],"operationId":"grant","parameters":[],"requestBody":{"required":true,"content":{"application/x-www-form-urlencoded":{"schema":{"required":["grant_type"],"type":"object","properties":{"username":{"type":"string"},"password":{"type":"string","format":"password"},"refresh_token":{"type":"string"},"code":{"type":"string"},"grant_type":{"type":"string"},"scope":{"type":"string"}}}}}},"responses":{"200":{"description":"Successfully exchanged credentials for token","content":{"application/json":{"schema":{"type":"object","properties":{"access_token":{"type":"string"},"token_type":{"type":"string"},"expires_in":{"type":"integer"},"refresh_token":{"type":"string"},"scope":{"type":"string"}}}}}},"400":{"description":"Invalid credentials or missing parameters.","content":{"application/json":{"schema":{"type":"object","properties":{"error":{"type":"string"}}}}}}},"security":[{"oauth2-client-authentication":[]}]}},"/protected":{"parameters":[]},"/user":{"parameters":[],"post":{"tags":["User"],"operationId":"createUser","parameters":[],"requestBody":{"required":true,"content":{"application/json":{"schema":{"$ref":"#/components/schemas/User"}}}},"responses":{"200":{"description":"Successful response."}}},"get":{"tags":["User"],"operationId":"getAllUsers","parameters":[],"responses":{"200":{"description":"Successful response."}}}},"/user/{username}":{"parameters":[{"name":"username","in":"path","required":true,"schema":{"type":"string"}}],"get":{"tags":["User"],"operationId":"getUser","parameters":[{"name":"username","in":"path","required":true,"schema":{"type":"string"}}],"responses":{"200":{"description":"Successful response."}}},"put":{"tags":["User"],"operationId":"updateUser","parameters":[{"name":"username","in":"path","required":true,"schema":{"type":"string"}}],"requestBody":{"required":true,"content":{"application/json":{"schema":{"$ref":"#/components/schemas/User"}}}},"responses":{"200":{"description":"Successful response."}}},"delete":{"tags":["User"],"operationId":"deleteUser","parameters":[{"name":"username","in":"path","required":true,"schema":{"type":"string"}}],"responses":{"200":{"description":"Successful response."}}}},"/files/{path}":{"parameters":[{"name":"path","description":"This path variable may contain slashes '/' and may be empty.","in":"path","required":true,"schema":{"type":"string"}}],"get":{"summary":"Returns the contents of a file on the server's filesystem.","description":"Content-Type is determined by the suffix of the file.","operationId":"getFile","responses":{"200":{"description":"Successful file fetch.","content":{"*/*":{"schema":{"type":"string","format":"binary"}}}},"404":{"description":"No file exists at path."}}}},"/doc":{"parameters":[],"get":{"tags":["Doc"],"operationId":"getDoc","parameters":[],"responses":{"200":{"description":"Successful response."}}}}},"components":{"schemas":{"Image":{"title":"Image","type":"object","properties":{"id":{"title":"id","type":"integer","description":"This is the primary identifier for this object.\n","nullable":false},"name":{"title":"name","type":"string","nullable":false},"description":{"title":"description","type":"string","nullable":true},"created":{"title":"created","type":"string","format":"date-time","nullable":false},"modified":{"title":"modified","type":"string","format":"date-time","nullable":false},"captured":{"title":"captured","type":"string","format":"date-time","nullable":true},"firstPubDate":{"title":"firstPubDate","type":"string","format":"date-time","nullable":true},"xCoordinates":{"title":"xCoordinates","type":"string","nullable":true},"yCoordinates":{"title":"yCoordinates","type":"string","nullable":true},"license":{"title":"license","type":"string","nullable":true},"usesLeft":{"title":"usesLeft","type":"integer","nullable":true},"resolution":{"title":"resolution","type":"string","nullable":true},"isPublicallyAdded":{"title":"isPublicallyAdded","type":"boolean","default":"false","nullable":false},"base64":{"title":"base64","type":"string","nullable":true},"imageTags":{"type":"array","items":{"$ref":"#/components/schemas/ImageToTag"},"nullable":true,"readOnly":true},"photographer":{"title":"photographer","type":"object","properties":{"id":{"type":"integer"}}},"user":{"title":"user","type":"object","properties":{"id":{"type":"integer"}}}},"description":""},"Photographer":{"title":"Photographer","type":"object","properties":{"id":{"title":"id","type":"integer","description":"This is the primary identifier for this object.\n","nullable":false},"fName":{"title":"fName","type":"string","nullable":false},"lName":{"title":"lName","type":"string","nullable":false},"email":{"title":"email","type":"string","nullable":true},"phone":{"title":"phone","type":"string","nullable":true},"images":{"type":"array","items":{"$ref":"#/components/schemas/Image"},"nullable":true,"readOnly":true}},"description":""},"User":{"title":"User","type":"object","properties":{"password":{"title":"password","type":"string","nullable":false,"writeOnly":true},"created":{"title":"created","type":"string","format":"date-time","nullable":false},"modified":{"title":"modified","type":"string","format":"date-time","nullable":false},"type":{"title":"type","enum":["admin","editor","photographer","customer"],"type":"string","default":"'customer'","nullable":false},"canEditor":{"title":"canEditor","type":"boolean","default":"false","nullable":false},"canPhotographer":{"title":"canPhotographer","type":"boolean","default":"false","nullable":false},"name":{"title":"name","type":"string","default":"''","nullable":false},"id":{"title":"id","type":"integer","description":"This is the primary identifier for this object.\n","nullable":false},"username":{"title":"username","type":"string","description":"No two objects may have the same value for this field.\n","nullable":false},"images":{"type":"array","items":{"$ref":"#/components/schemas/Image"},"nullable":true,"readOnly":true},"tokens":{"type":"array","items":{"$ref":"#/components/schemas/ManagedAuthToken"},"nullable":true,"readOnly":true}},"description":""},"Tag":{"title":"Tag","type":"object","properties":{"id":{"title":"id","type":"integer","description":"This is the primary identifier for this object.\n","nullable":false},"name":{"title":"name","type":"string","description":"No two objects may have the same value for this field.\n","nullable":false},"imageTags":{"type":"array","items":{"$ref":"#/components/schemas/ImageToTag"},"nullable":true,"readOnly":true}},"description":""},"ImageToTag":{"title":"ImageToTag","type":"object","properties":{"id":{"title":"id","type":"integer","description":"This is the primary identifier for this object.\n","nullable":false},"tag":{"title":"tag","type":"object","properties":{"id":{"type":"integer"}}},"image":{"title":"image","type":"object","properties":{"id":{"type":"integer"}}}},"description":""},"BasicCredential":{"title":"BasicCredential","type":"object","properties":{"id":{"title":"id","type":"integer","description":"This is the primary identifier for this object.\n","nullable":false},"created":{"title":"created","type":"string","format":"date-time","nullable":false},"modified":{"title":"modified","type":"string","format":"date-time","nullable":false},"username":{"title":"username","type":"string","description":"No two objects may have the same value for this field.\n","nullable":false},"password":{"title":"password","type":"string","nullable":false}},"description":""},"ManagedAuthClient":{"title":"ManagedAuthClient","type":"object","properties":{"id":{"title":"id","type":"string","description":"This is the primary identifier for this object.\n","nullable":false},"hashedSecret":{"title":"hashedSecret","type":"string","nullable":true},"salt":{"title":"salt","type":"string","nullable":true},"redirectURI":{"title":"redirectURI","type":"string","nullable":true},"allowedScope":{"title":"allowedScope","type":"string","nullable":true},"tokens":{"type":"array","items":{"$ref":"#/components/schemas/ManagedAuthToken"},"nullable":true,"readOnly":true}},"description":""},"ManagedAuthToken":{"title":"ManagedAuthToken","type":"object","properties":{"id":{"title":"id","type":"integer","description":"This is the primary identifier for this object.\n","nullable":false},"code":{"title":"code","type":"string","description":"No two objects may have the same value for this field.\n","nullable":true},"accessToken":{"title":"accessToken","type":"string","description":"No two objects may have the same value for this field.\n","nullable":true},"refreshToken":{"title":"refreshToken","type":"string","description":"No two objects may have the same value for this field.\n","nullable":true},"scope":{"title":"scope","type":"string","nullable":true},"issueDate":{"title":"issueDate","type":"string","format":"date-time","nullable":false},"expirationDate":{"title":"expirationDate","type":"string","format":"date-time","nullable":false},"type":{"title":"type","type":"string","nullable":true},"resourceOwner":{"title":"resourceOwner","type":"object","properties":{"id":{"type":"integer"}}},"client":{"title":"client","type":"object","properties":{"id":{"type":"string"}}}},"description":""}},"responses":{"InsufficientScope":{"description":"The provided credentials or bearer token have insufficient permission to access this route.","content":{"application/json":{"schema":{"type":"object","properties":{"error":{"type":"string"},"scope":{"type":"string","description":"The required scope for this operation."}}}}}},"InsufficientAccess":{"description":"The provided credentials or bearer token are not authorized for this request.","content":{"application/json":{"schema":{"type":"object","properties":{"error":{"type":"string"}}}}}},"MalformedAuthorizationHeader":{"description":"The provided Authorization header was malformed.","content":{"application/json":{"schema":{"type":"object","properties":{"error":{"type":"string"}}}}}}},"parameters":{},"requestBodies":{},"headers":{},"securitySchemes":{"oauth2-client-authentication":{"type":"http","description":"This endpoint requires an OAuth2 Client ID and Secret as the Basic Authentication username and password. If the client ID does not have a secret (public client), the password is the empty string (retain the separating colon, e.g. 'com.aqueduct.app:').","scheme":"basic"},"oauth2":{"type":"oauth2","description":"Standard OAuth 2.0","flows":{"password":{"tokenUrl":"http://localhost:8888/auth/token","refreshUrl":"http://localhost:8888/auth/token","scopes":{}}}}},"callbacks":{}}}
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "bothnia_server",
+        "description": "En webbserver för att hantera Bothniabladets bildsamlingar.",
+        "version": "0.0.1"
+    },
+    "servers": [
+        {
+            "url": "http://localhost:8888"
+        }
+    ],
+    "paths": {
+        "/upload/{id}": {
+            "parameters": [
+                {
+                    "name": "id",
+                    "in": "path",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            ],
+            "post": {
+                "tags": [
+                    "MediaUpload"
+                ],
+                "operationId": "postMultipartForm",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful response."
+                    }
+                }
+            }
+        },
+        "/image": {
+            "parameters": [],
+            "post": {
+                "tags": [
+                    "Image"
+                ],
+                "operationId": "addImage",
+                "parameters": [],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Image"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful response."
+                    }
+                }
+            },
+            "get": {
+                "tags": [
+                    "Image"
+                ],
+                "operationId": "getImages",
+                "parameters": [],
+                "responses": {
+                    "200": {
+                        "description": "Successful response."
+                    }
+                }
+            }
+        },
+        "/image/{id}": {
+            "parameters": [
+                {
+                    "name": "id",
+                    "in": "path",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            ],
+            "get": {
+                "tags": [
+                    "Image"
+                ],
+                "operationId": "getImage",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful response."
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Image"
+                ],
+                "operationId": "updateImage",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Image"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful response."
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Image"
+                ],
+                "operationId": "deleteImage",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful response."
+                    }
+                }
+            }
+        },
+        "/photographer": {
+            "parameters": [],
+            "post": {
+                "tags": [
+                    "Photographer"
+                ],
+                "operationId": "createPhotographer",
+                "parameters": [],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Photographer"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Returns created object.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Photographer"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid request.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "error": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "409": {
+                        "description": "Object already exists",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "error": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "get": {
+                "tags": [
+                    "Photographer"
+                ],
+                "operationId": "getPhotographers",
+                "parameters": [
+                    {
+                        "name": "count",
+                        "in": "query",
+                        "required": false,
+                        "allowEmptyValue": false,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "offset",
+                        "in": "query",
+                        "required": false,
+                        "allowEmptyValue": false,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "pageBy",
+                        "in": "query",
+                        "required": false,
+                        "allowEmptyValue": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "pageAfter",
+                        "in": "query",
+                        "required": false,
+                        "allowEmptyValue": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "pagePrior",
+                        "in": "query",
+                        "required": false,
+                        "allowEmptyValue": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "sortBy",
+                        "in": "query",
+                        "required": false,
+                        "allowEmptyValue": false,
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Returns a list of objects.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Photographer"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid request.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "error": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/photographer/{id}": {
+            "parameters": [
+                {
+                    "name": "id",
+                    "in": "path",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            ],
+            "get": {
+                "tags": [
+                    "Photographer"
+                ],
+                "operationId": "getPhotographer",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Returns a single object.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Photographer"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "No object found."
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Photographer"
+                ],
+                "operationId": "deletePhotographer",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Object successfully deleted."
+                    },
+                    "404": {
+                        "description": "No object found."
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Photographer"
+                ],
+                "operationId": "updatePhotographer",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Photographer"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Returns updated object.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Photographer"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "No object found."
+                    },
+                    "400": {
+                        "description": "Invalid request.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "error": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "409": {
+                        "description": "Object already exists",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "error": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/tag": {
+            "parameters": [],
+            "post": {
+                "tags": [
+                    "Tag"
+                ],
+                "operationId": "createTag",
+                "parameters": [],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Tag"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Returns created object.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Tag"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid request.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "error": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "409": {
+                        "description": "Object already exists",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "error": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "get": {
+                "tags": [
+                    "Tag"
+                ],
+                "operationId": "getTags",
+                "parameters": [
+                    {
+                        "name": "count",
+                        "in": "query",
+                        "required": false,
+                        "allowEmptyValue": false,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "offset",
+                        "in": "query",
+                        "required": false,
+                        "allowEmptyValue": false,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "pageBy",
+                        "in": "query",
+                        "required": false,
+                        "allowEmptyValue": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "pageAfter",
+                        "in": "query",
+                        "required": false,
+                        "allowEmptyValue": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "pagePrior",
+                        "in": "query",
+                        "required": false,
+                        "allowEmptyValue": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "sortBy",
+                        "in": "query",
+                        "required": false,
+                        "allowEmptyValue": false,
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Returns a list of objects.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Tag"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid request.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "error": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/tag/{id}": {
+            "parameters": [
+                {
+                    "name": "id",
+                    "in": "path",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            ],
+            "get": {
+                "tags": [
+                    "Tag"
+                ],
+                "operationId": "getTag",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Returns a single object.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Tag"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "No object found."
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Tag"
+                ],
+                "operationId": "deleteTag",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Object successfully deleted."
+                    },
+                    "404": {
+                        "description": "No object found."
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Tag"
+                ],
+                "operationId": "updateTag",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Tag"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Returns updated object.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Tag"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "No object found."
+                    },
+                    "400": {
+                        "description": "Invalid request.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "error": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "409": {
+                        "description": "Object already exists",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "error": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/tag/find": {
+            "parameters": [],
+            "get": {
+                "tags": [
+                    "TagFind"
+                ],
+                "operationId": "findTag",
+                "parameters": [
+                    {
+                        "name": "name",
+                        "in": "query",
+                        "required": true,
+                        "allowEmptyValue": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful response."
+                    }
+                }
+            }
+        },
+        "/image/search": {
+            "parameters": [],
+            "get": {
+                "tags": [
+                    "ImageSearch"
+                ],
+                "operationId": "findTag",
+                "parameters": [
+                    {
+                        "name": "imageName",
+                        "in": "query",
+                        "required": false,
+                        "allowEmptyValue": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "photographerId",
+                        "in": "query",
+                        "required": false,
+                        "allowEmptyValue": false,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "tags",
+                        "in": "query",
+                        "required": false,
+                        "allowEmptyValue": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "startDate",
+                        "in": "query",
+                        "required": false,
+                        "allowEmptyValue": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "endDate",
+                        "in": "query",
+                        "required": false,
+                        "allowEmptyValue": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful response."
+                    }
+                }
+            }
+        },
+        "/imagetag": {
+            "parameters": [],
+            "post": {
+                "tags": [
+                    "ImageTag"
+                ],
+                "operationId": "createImageToTag",
+                "parameters": [],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/ImageToTag"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Returns created object.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ImageToTag"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid request.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "error": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "409": {
+                        "description": "Object already exists",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "error": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "get": {
+                "tags": [
+                    "ImageTag"
+                ],
+                "operationId": "getImageToTags",
+                "parameters": [
+                    {
+                        "name": "count",
+                        "in": "query",
+                        "required": false,
+                        "allowEmptyValue": false,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "offset",
+                        "in": "query",
+                        "required": false,
+                        "allowEmptyValue": false,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "pageBy",
+                        "in": "query",
+                        "required": false,
+                        "allowEmptyValue": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "pageAfter",
+                        "in": "query",
+                        "required": false,
+                        "allowEmptyValue": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "pagePrior",
+                        "in": "query",
+                        "required": false,
+                        "allowEmptyValue": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "sortBy",
+                        "in": "query",
+                        "required": false,
+                        "allowEmptyValue": false,
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Returns a list of objects.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/ImageToTag"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid request.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "error": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/imagetag/{id}": {
+            "parameters": [
+                {
+                    "name": "id",
+                    "in": "path",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            ],
+            "get": {
+                "tags": [
+                    "ImageTag"
+                ],
+                "operationId": "getImageToTag",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Returns a single object.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ImageToTag"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "No object found."
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "ImageTag"
+                ],
+                "operationId": "deleteImageToTag",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Object successfully deleted."
+                    },
+                    "404": {
+                        "description": "No object found."
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "ImageTag"
+                ],
+                "operationId": "updateImageToTag",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/ImageToTag"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Returns updated object.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ImageToTag"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "No object found."
+                    },
+                    "400": {
+                        "description": "Invalid request.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "error": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "409": {
+                        "description": "Object already exists",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "error": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/example": {
+            "parameters": []
+        },
+        "/auth/token": {
+            "parameters": [],
+            "post": {
+                "tags": [
+                    "Auth"
+                ],
+                "operationId": "grant",
+                "parameters": [],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/x-www-form-urlencoded": {
+                            "schema": {
+                                "required": [
+                                    "grant_type"
+                                ],
+                                "type": "object",
+                                "properties": {
+                                    "username": {
+                                        "type": "string"
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "format": "password"
+                                    },
+                                    "refresh_token": {
+                                        "type": "string"
+                                    },
+                                    "code": {
+                                        "type": "string"
+                                    },
+                                    "grant_type": {
+                                        "type": "string"
+                                    },
+                                    "scope": {
+                                        "type": "string"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successfully exchanged credentials for token",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "access_token": {
+                                            "type": "string"
+                                        },
+                                        "token_type": {
+                                            "type": "string"
+                                        },
+                                        "expires_in": {
+                                            "type": "integer"
+                                        },
+                                        "refresh_token": {
+                                            "type": "string"
+                                        },
+                                        "scope": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid credentials or missing parameters.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "error": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "oauth2-client-authentication": []
+                    }
+                ]
+            }
+        },
+        "/protected": {
+            "parameters": []
+        },
+        "/user": {
+            "parameters": [],
+            "post": {
+                "tags": [
+                    "User"
+                ],
+                "operationId": "createUser",
+                "parameters": [],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/User"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful response."
+                    }
+                }
+            },
+            "get": {
+                "tags": [
+                    "User"
+                ],
+                "operationId": "getAllUsers",
+                "parameters": [],
+                "responses": {
+                    "200": {
+                        "description": "Successful response."
+                    }
+                }
+            }
+        },
+        "/user/{username}": {
+            "parameters": [
+                {
+                    "name": "username",
+                    "in": "path",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            ],
+            "get": {
+                "tags": [
+                    "User"
+                ],
+                "operationId": "getUser",
+                "parameters": [
+                    {
+                        "name": "username",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful response."
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "User"
+                ],
+                "operationId": "updateUser",
+                "parameters": [
+                    {
+                        "name": "username",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/User"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful response."
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "User"
+                ],
+                "operationId": "deleteUser",
+                "parameters": [
+                    {
+                        "name": "username",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful response."
+                    }
+                }
+            }
+        },
+        "/files/{path}": {
+            "parameters": [
+                {
+                    "name": "path",
+                    "description": "This path variable may contain slashes '/' and may be empty.",
+                    "in": "path",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            ],
+            "get": {
+                "summary": "Returns the contents of a file on the server's filesystem.",
+                "description": "Content-Type is determined by the suffix of the file.",
+                "operationId": "getFile",
+                "responses": {
+                    "200": {
+                        "description": "Successful file fetch.",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "type": "string",
+                                    "format": "binary"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "No file exists at path."
+                    }
+                }
+            }
+        },
+        "/doc": {
+            "parameters": [],
+            "get": {
+                "tags": [
+                    "Doc"
+                ],
+                "operationId": "getDoc",
+                "parameters": [],
+                "responses": {
+                    "200": {
+                        "description": "Successful response."
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "Image": {
+                "title": "Image",
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "title": "id",
+                        "type": "integer",
+                        "description": "This is the primary identifier for this object.\n",
+                        "nullable": false
+                    },
+                    "name": {
+                        "title": "name",
+                        "type": "string",
+                        "nullable": false
+                    },
+                    "description": {
+                        "title": "description",
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "created": {
+                        "title": "created",
+                        "type": "string",
+                        "format": "date-time",
+                        "nullable": false
+                    },
+                    "modified": {
+                        "title": "modified",
+                        "type": "string",
+                        "format": "date-time",
+                        "nullable": false
+                    },
+                    "firstPubDate": {
+                        "title": "firstPubDate",
+                        "type": "string",
+                        "format": "date-time",
+                        "nullable": true
+                    },
+                    "gpsLatitude": {
+                        "title": "gpsLatitude",
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "gpsLongitude": {
+                        "title": "gpsLongitude",
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "cameraModel": {
+                        "title": "cameraModel",
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "imageWidth": {
+                        "title": "imageWidth",
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "imageHeight": {
+                        "title": "imageHeight",
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "captured": {
+                        "title": "captured",
+                        "type": "string",
+                        "format": "date-time",
+                        "nullable": true
+                    },
+                    "license": {
+                        "title": "license",
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "usesLeft": {
+                        "title": "usesLeft",
+                        "type": "integer",
+                        "nullable": true
+                    },
+                    "resolution": {
+                        "title": "resolution",
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "isPublicallyAdded": {
+                        "title": "isPublicallyAdded",
+                        "type": "boolean",
+                        "default": "false",
+                        "nullable": false
+                    },
+                    "imageTags": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/ImageToTag"
+                        },
+                        "nullable": true,
+                        "readOnly": true
+                    },
+                    "photographer": {
+                        "title": "photographer",
+                        "type": "object",
+                        "properties": {
+                            "id": {
+                                "type": "integer"
+                            }
+                        }
+                    },
+                    "user": {
+                        "title": "user",
+                        "type": "object",
+                        "properties": {
+                            "id": {
+                                "type": "integer"
+                            }
+                        }
+                    }
+                },
+                "description": ""
+            },
+            "Photographer": {
+                "title": "Photographer",
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "title": "id",
+                        "type": "integer",
+                        "description": "This is the primary identifier for this object.\n",
+                        "nullable": false
+                    },
+                    "name": {
+                        "title": "name",
+                        "type": "string",
+                        "nullable": false
+                    },
+                    "email": {
+                        "title": "email",
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "phone": {
+                        "title": "phone",
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "images": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/Image"
+                        },
+                        "nullable": true,
+                        "readOnly": true
+                    }
+                },
+                "description": ""
+            },
+            "User": {
+                "title": "User",
+                "type": "object",
+                "properties": {
+                    "password": {
+                        "title": "password",
+                        "type": "string",
+                        "nullable": false,
+                        "writeOnly": true
+                    },
+                    "created": {
+                        "title": "created",
+                        "type": "string",
+                        "format": "date-time",
+                        "nullable": false
+                    },
+                    "modified": {
+                        "title": "modified",
+                        "type": "string",
+                        "format": "date-time",
+                        "nullable": false
+                    },
+                    "type": {
+                        "title": "type",
+                        "enum": [
+                            "admin",
+                            "editor",
+                            "photographer",
+                            "customer"
+                        ],
+                        "type": "string",
+                        "default": "'customer'",
+                        "nullable": false
+                    },
+                    "canEditor": {
+                        "title": "canEditor",
+                        "type": "boolean",
+                        "default": "false",
+                        "nullable": false
+                    },
+                    "canPhotographer": {
+                        "title": "canPhotographer",
+                        "type": "boolean",
+                        "default": "false",
+                        "nullable": false
+                    },
+                    "name": {
+                        "title": "name",
+                        "type": "string",
+                        "default": "''",
+                        "nullable": false
+                    },
+                    "id": {
+                        "title": "id",
+                        "type": "integer",
+                        "description": "This is the primary identifier for this object.\n",
+                        "nullable": false
+                    },
+                    "username": {
+                        "title": "username",
+                        "type": "string",
+                        "description": "No two objects may have the same value for this field.\n",
+                        "nullable": false
+                    },
+                    "images": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/Image"
+                        },
+                        "nullable": true,
+                        "readOnly": true
+                    },
+                    "tokens": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/ManagedAuthToken"
+                        },
+                        "nullable": true,
+                        "readOnly": true
+                    }
+                },
+                "description": ""
+            },
+            "Tag": {
+                "title": "Tag",
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "title": "id",
+                        "type": "integer",
+                        "description": "This is the primary identifier for this object.\n",
+                        "nullable": false
+                    },
+                    "name": {
+                        "title": "name",
+                        "type": "string",
+                        "description": "No two objects may have the same value for this field.\n",
+                        "nullable": false
+                    },
+                    "imageTags": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/ImageToTag"
+                        },
+                        "nullable": true,
+                        "readOnly": true
+                    }
+                },
+                "description": ""
+            },
+            "ImageToTag": {
+                "title": "ImageToTag",
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "title": "id",
+                        "type": "integer",
+                        "description": "This is the primary identifier for this object.\n",
+                        "nullable": false
+                    },
+                    "tag": {
+                        "title": "tag",
+                        "type": "object",
+                        "properties": {
+                            "id": {
+                                "type": "integer"
+                            }
+                        }
+                    },
+                    "image": {
+                        "title": "image",
+                        "type": "object",
+                        "properties": {
+                            "id": {
+                                "type": "integer"
+                            }
+                        }
+                    }
+                },
+                "description": ""
+            },
+            "BasicCredential": {
+                "title": "BasicCredential",
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "title": "id",
+                        "type": "integer",
+                        "description": "This is the primary identifier for this object.\n",
+                        "nullable": false
+                    },
+                    "created": {
+                        "title": "created",
+                        "type": "string",
+                        "format": "date-time",
+                        "nullable": false
+                    },
+                    "modified": {
+                        "title": "modified",
+                        "type": "string",
+                        "format": "date-time",
+                        "nullable": false
+                    },
+                    "username": {
+                        "title": "username",
+                        "type": "string",
+                        "description": "No two objects may have the same value for this field.\n",
+                        "nullable": false
+                    },
+                    "password": {
+                        "title": "password",
+                        "type": "string",
+                        "nullable": false
+                    }
+                },
+                "description": ""
+            },
+            "ManagedAuthClient": {
+                "title": "ManagedAuthClient",
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "title": "id",
+                        "type": "string",
+                        "description": "This is the primary identifier for this object.\n",
+                        "nullable": false
+                    },
+                    "hashedSecret": {
+                        "title": "hashedSecret",
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "salt": {
+                        "title": "salt",
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "redirectURI": {
+                        "title": "redirectURI",
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "allowedScope": {
+                        "title": "allowedScope",
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "tokens": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/ManagedAuthToken"
+                        },
+                        "nullable": true,
+                        "readOnly": true
+                    }
+                },
+                "description": ""
+            },
+            "ManagedAuthToken": {
+                "title": "ManagedAuthToken",
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "title": "id",
+                        "type": "integer",
+                        "description": "This is the primary identifier for this object.\n",
+                        "nullable": false
+                    },
+                    "code": {
+                        "title": "code",
+                        "type": "string",
+                        "description": "No two objects may have the same value for this field.\n",
+                        "nullable": true
+                    },
+                    "accessToken": {
+                        "title": "accessToken",
+                        "type": "string",
+                        "description": "No two objects may have the same value for this field.\n",
+                        "nullable": true
+                    },
+                    "refreshToken": {
+                        "title": "refreshToken",
+                        "type": "string",
+                        "description": "No two objects may have the same value for this field.\n",
+                        "nullable": true
+                    },
+                    "scope": {
+                        "title": "scope",
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "issueDate": {
+                        "title": "issueDate",
+                        "type": "string",
+                        "format": "date-time",
+                        "nullable": false
+                    },
+                    "expirationDate": {
+                        "title": "expirationDate",
+                        "type": "string",
+                        "format": "date-time",
+                        "nullable": false
+                    },
+                    "type": {
+                        "title": "type",
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "resourceOwner": {
+                        "title": "resourceOwner",
+                        "type": "object",
+                        "properties": {
+                            "id": {
+                                "type": "integer"
+                            }
+                        }
+                    },
+                    "client": {
+                        "title": "client",
+                        "type": "object",
+                        "properties": {
+                            "id": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                },
+                "description": ""
+            }
+        },
+        "responses": {
+            "InsufficientScope": {
+                "description": "The provided credentials or bearer token have insufficient permission to access this route.",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "error": {
+                                    "type": "string"
+                                },
+                                "scope": {
+                                    "type": "string",
+                                    "description": "The required scope for this operation."
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "InsufficientAccess": {
+                "description": "The provided credentials or bearer token are not authorized for this request.",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "error": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "MalformedAuthorizationHeader": {
+                "description": "The provided Authorization header was malformed.",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "error": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "parameters": {},
+        "requestBodies": {},
+        "headers": {},
+        "securitySchemes": {
+            "oauth2-client-authentication": {
+                "type": "http",
+                "description": "This endpoint requires an OAuth2 Client ID and Secret as the Basic Authentication username and password. If the client ID does not have a secret (public client), the password is the empty string (retain the separating colon, e.g. 'com.aqueduct.app:').",
+                "scheme": "basic"
+            },
+            "oauth2": {
+                "type": "oauth2",
+                "description": "Standard OAuth 2.0",
+                "flows": {
+                    "password": {
+                        "tokenUrl": "http://localhost:8888/auth/token",
+                        "refreshUrl": "http://localhost:8888/auth/token",
+                        "scopes": {}
+                    }
+                }
+            }
+        },
+        "callbacks": {}
+    }
+}
