@@ -36,13 +36,22 @@ Future main() async {
   test("POST /image with minimum data", () async {
     final base64String =
         base64Encode(await File("test/test_assets/test.jpg").readAsBytes());
-    final res = await harness.agent.post(
-      "/image",
-      body: {
-        "name": "My Picture",
-        "base64": base64String,
-      },
+
+    final res = await http.post(
+      "http://94.237.89.244:7777/image",
+      headers: headers,
+      body: json.encode({
+        "name": "My Test Picture",
+      }),
     );
+
+    // final res = await harness.agent.post(
+    //   "/image",
+    //   body: {
+    //     "name": "My Picture",
+    //     // "base64": base64String,
+    //   },
+    // );
 
     expect(
         res,
