@@ -6,9 +6,9 @@ class _ImageToTag {
   @primaryKey
   int id;
 
-  @Relate(#imageTags)
+  @Relate(#imageTags, onDelete: DeleteRule.cascade)
   Tag tag;
 
-  @Relate(#imageTags)
+  @Relate(#imageTags, onDelete: DeleteRule.cascade)
   Image image;
 }

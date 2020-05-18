@@ -19,7 +19,7 @@ Future main() async {
       headers: headers,
       body: json.encode({
         "name": "Lodjur med barn",
-        "tags": ["lodjur", "sko", "söt"],
+        "tags": ["lodjur", "skog", "söt"],
       }),
     );
 
